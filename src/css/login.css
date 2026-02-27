@@ -1,0 +1,146 @@
+.title {
+    color: #082018;
+    font-weight: bold;
+}
+
+
+.login-wrapper {
+    background-color: #ffffff;
+}
+
+
+.login-card {
+    background: #ffffff;
+    border: 1px solid #0000000e;
+    width: 100%;
+    max-width: 420px;
+    padding: 40px 35px;
+    border-radius: 20px;
+    position: relative;
+}
+
+
+.back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background: #ffffff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+
+.circulo {
+    width: 60px;
+    height: 60px;
+    background-color: #1EA53A;
+    border-radius: 50%;
+    margin: 30px auto 15px auto;
+}
+
+
+.login-card h2 {
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    text-align: center;
+    font-size: 14px;
+    color: #6B776B;
+    margin-bottom: 25px;
+}
+
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    color: #0B2F1A;
+    font-weight: 600;
+}
+
+.login-form label {
+    font-size: 14px;
+    margin-top: 12px;
+    margin-bottom: 5px;
+}
+
+.login-form input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 14px;
+    width: 100%;
+}
+
+.login-form input:focus {
+    border: 1px solid #1EA53A;
+}
+
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper .eye {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+.login-button {
+    margin-top: 20px;
+    padding: 12px;
+    background-color: #1EA53A;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.login-button:hover {
+    background-color: #258636;
+}
+
+
+.register-link {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 14px;
+    color: #6B776B;
+}
+
+.register-link span {
+    color: #1EA53A;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.login-image-container {
+  padding: 0;
+}
+
+.login-image {
+  width: 100%;
+  height: 100vh;
+  object-fit: cover;
+}
+
+@media (max-width: 991px) {
+    .login-image {
+        height: 0px;
+    }
+
+    .login-card {
+        margin: 40px 0;
+    }
+}
