@@ -1,8 +1,8 @@
 import "../css/cardfield.css";
 
-const CardField = ({ court }) => {
+const CardField = ({ court ,openModal }) => {
   return (
-    <section className="col-md-4 mb-4 ">
+    <section className="col-12 col-md-6 col-lg-4 mb-4 ">
       <div className="card court-card shadow-sm">
         <div className="position-relative">
           <img src={court.image} className="card-img-top" alt={court.name} />
@@ -27,7 +27,13 @@ const CardField = ({ court }) => {
               <small className="text-muted">por hora</small>
             </div>
 
-            <button className="btn-reserve">Reservar</button>
+              <button
+              className="btn-reserve"
+              onClick={openModal}
+            >
+              Reservar
+            </button>
+
           </div>
         </div>
       </div>

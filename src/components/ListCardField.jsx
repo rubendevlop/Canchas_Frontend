@@ -1,5 +1,7 @@
 import CardField from './CardField';
 import canchatechada  from "../assets/canchatechada.webp"
+import { useState } from 'react';
+import ReserveModal from './ReserveModal';
 
 const courts = [
   {
@@ -42,13 +44,20 @@ const courts = [
 
 
 const ListCardField = () => {
+  const [selectedCourt, setSelectedCourt] = useState(null);
   return (
     <div className="container px-4">
          <div className="row">
            {courts.map((court) => (
-             <CardField key={court.id} court={court} />
+             <CardField key={court.id} court={court}  openModal={() => setSelectedCourt(court)}/>
            ))}
          </div>
+          {selectedCourt && (
+        <ReserveModal
+          court={selectedCourt}
+          closeModal={() => setSelectedCourt(null)}
+        />
+      )}
        </div>
    
   )
