@@ -17,7 +17,8 @@ const HomeScreen = () => {
                     <div className="tag"><i className="fa fa-calendar-o" aria-hidden="true"></i> Reserva en segundos</div>
                     <h2 className="main-title">Tu proximo partido ya tiene cancha.</h2>
                     <p className="slogan">El complejo elegido por los verdaderos jugadores.</p>
-                    <div className="imgs-cont">
+                    <div className="mega-div">
+                        <div className="imgs-cont">
                         <div className="personal-cont large">
                             <img className="images" src={principalImg} alt="Imágenes del complejo"/>
                         </div>
@@ -28,14 +29,29 @@ const HomeScreen = () => {
                             <img className="images" src={principalImg} alt="Imágenes del complejo"/>
                         </div>
                     </div>
+                    <div className="imgs-cont">
+                        <div className="personal-cont small">
+                            <img className="images" src={principalImg} alt="Imágenes del complejo"/>
+                        </div>
+                        <div className="personal-cont samll">
+                            <img className="images" src={principalImg} alt="Imágenes del complejo"/>
+                        </div>
+                        <div className="personal-cont large">
+                            <img className="images" src={principalImg} alt="Imágenes del complejo"/>
+                        </div>
+                    </div>
+                    </div>
                     <button className="availability-btn">
                         Ver disponibilidad <i className="fa fa-calendar-o" aria-hidden="true"></i>
                     </button>
                 </div>
             </section>
+            <section className="ads">
+                <p>Publicidad/Patrocinio</p>
+            </section>
             <section className="about-complex">
-                <div>
-                    <h3>Sobre el complejo</h3>
+                <div className="description-container">
+                    <h3 className="ab-co-title">Sobre el complejo</h3>
                     <p>Todo lo que necesitas saber para jugar cómodo y seguro</p>
                     <div className="features-list">
                         <div className="feature-item">
@@ -72,6 +88,9 @@ const HomeScreen = () => {
                 <div className="map-cont">
                     <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3560.105917472264!2d-65.20974192440858!3d-26.83658327669264!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94225d3ad7f30f1d%3A0xf8606cd659b8e3e4!2sRollingCode%20School!5e0!3m2!1ses-419!2sar!4v1772907113097!5m2!1ses-419!2sar" allowFullScreen="" loading="lazy" referrerPolicy="no-referrer-when-downgrade"></iframe>
                 </div>
+            </section>
+            <section className="ads">
+                <p>Publicidad/Patrocinio</p>
             </section>
             <section className="market">
                 <h2>Productos Sugeridos</h2>

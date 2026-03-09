@@ -84,6 +84,7 @@ h1{
     z-index: 10;
     box-shadow: 0 -10px 20px rgba(0,0,0,0.1); 
     text-align: center;
+    width: 100%;
 }
 
 .tag{
@@ -108,12 +109,18 @@ h1{
     margin-bottom: 15px;
 }
 
+.mega-div{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+}
+
 .imgs-cont{
     display: grid;
     grid-template-columns: repeat(2, 1fr); 
     gap: 15px; 
     max-width: 600px;
-    margin: 0 auto;
 }
 
 .large{
@@ -147,6 +154,18 @@ h1{
     border-radius: 8px;
     font-size: 18px;
     margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+.ads{
+    display: flex;
+    height: 150px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 30px;
+    background-color: #0B2F1A;
+    color: #fff;
 }
 
 .desc-item{
@@ -157,6 +176,7 @@ h1{
     padding: 15px;
     display: flex;
     flex-wrap: wrap;
+    padding-top: 35px;
 }
 
 .about-complex h3{
@@ -168,6 +188,7 @@ h1{
 .about-complex p{
     color: var(--color-text-secondary);
     margin-bottom: 10px;
+    width: 100%;
 }
 
 .features-list{
@@ -230,11 +251,14 @@ h1{
 .market{
     padding: 0 15px;
     text-align: center;
+    width: 100%;
 }
 
 .market h2{
     color: var(--color-title);
     text-align: start;
+    font-size: 25px;
+    margin-top: 50px;
 }
 
 .market p{
@@ -242,3 +266,72 @@ h1{
     text-align: start;
 }
 
+@media screen and (min-width: 768px){
+
+    .tag{
+        font-size: 15px;
+    }
+
+    .info-content{
+        text-align: center;
+    }
+
+    .description-container{
+        width: 50%;
+    }
+
+    .ab-co-title{
+        text-align: center;
+    }
+
+    .description-container p{
+        text-align: center;
+    }
+
+    .text-content{
+        text-align: start;
+    }
+
+    .map-cont{
+        width: 50%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 354.8px;
+        align-items: center;
+    }
+
+    .market h2{
+        text-align: center;
+        margin-bottom: 10px;
+        font-size: 30px;
+    }
+
+    .market p{
+        text-align: center;
+    }
+
+    .market .availability-btn{
+        margin-bottom: 15px;
+    }
+}
+
+@media screen and (min-width: 1024px){
+    h1{
+        font-size: 40px;
+        text-align: center;
+    }
+
+    .tag{
+        font-size: 20px;
+    }
+
+    .ads{
+        height: 200px;
+    }
+
+    .map-cont iframe{
+        height: 350px;
+    }
+    
+}
