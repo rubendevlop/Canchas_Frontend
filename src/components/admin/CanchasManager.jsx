@@ -5,7 +5,6 @@ export const CanchasManager = () => {
   const [loading, setLoading] = useState(true);
   
   const [mostrarModal, setMostrarModal] = useState(false);
-  // Agregamos 'active' al estado inicial
   const [formData, setFormData] = useState({ name: '', pricePerHour: '', active: true });
   const [editandoId, setEditandoId] = useState(null);
 
@@ -27,13 +26,12 @@ export const CanchasManager = () => {
 
   const abrirModalCrear = () => {
     setEditandoId(null);
-    setFormData({ name: '', pricePerHour: '', active: true }); // Por defecto activa
+    setFormData({ name: '', pricePerHour: '', active: true }); 
     setMostrarModal(true);
   };
 
   const abrirModalEditar = (cancha) => {
     setEditandoId(cancha._id);
-    // Cargamos los datos, incluyendo el estado active
     setFormData({ name: cancha.name, pricePerHour: cancha.pricePerHour, active: cancha.active !== false });
     setMostrarModal(true);
   };
@@ -104,11 +102,10 @@ export const CanchasManager = () => {
         <div className="row g-4">
           {canchas.map((cancha) => (
             <div className="col-12 col-md-6 col-lg-4" key={cancha._id}>
-              {/* Si la cancha está inactiva, le ponemos una opacidad para que el admin note que está en mantenimiento */}
               <div className={`card h-100 shadow-sm border-0 ${cancha.active === false ? 'opacity-75' : ''}`} style={{ backgroundColor: 'var(--color-card)' }}>
                 <div className="bg-light d-flex align-items-center justify-content-center border-bottom position-relative" style={{ height: '160px', color: 'var(--color-text-secondary)' }}>
                   <i className="bi bi-image fs-1 opacity-50"></i>
-                  {/* Etiqueta visual si está en mantenimiento */}
+                
                   {cancha.active === false && (
                     <span className="badge bg-warning text-dark position-absolute top-0 end-0 m-2">Inactiva</span>
                   )}
@@ -136,7 +133,7 @@ export const CanchasManager = () => {
         </div>
       )}
 
-      {/* MODAL */}
+      
       {mostrarModal && (
         <div className="position-fixed top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center" style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1050 }}>
           <div className="bg-white p-4 rounded shadow-lg w-100" style={{ maxWidth: '500px' }}>
@@ -172,7 +169,7 @@ export const CanchasManager = () => {
                 />
               </div>
 
-              {/* SWITCH DE ESTADO (Solo visible al editar) */}
+             
               {editandoId && (
                 <div className="form-check form-switch mb-4 p-3 rounded" style={{ backgroundColor: '#f8f9fa', border: '1px solid var(--color-border)' }}>
                   <input 

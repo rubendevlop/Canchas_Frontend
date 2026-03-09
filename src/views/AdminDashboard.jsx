@@ -27,13 +27,12 @@ export const AdminDashboard = () => {
   return (
     <div className="d-flex flex-column min-vh-100">
       
-      {/* ================= HEADER / NAVBAR RESPONSIVE ================= */}
       <header 
         className="d-flex flex-column flex-md-row align-items-center justify-content-between p-3 shadow-sm gap-3" 
         style={{ backgroundColor: 'var(--color-card)', borderBottom: '1px solid var(--color-border)' }}
       >
         <div className="d-flex align-items-center justify-content-between w-100" style={{ maxWidth: '100%' }}>
-          {/* Logo y Nombre */}
+        
           <div className="d-flex align-items-center gap-3">
             <div 
               className="rounded-circle" 
@@ -44,18 +43,18 @@ export const AdminDashboard = () => {
             </span>
           </div>
 
-          {/* Botón Volver (En celu es solo el ícono) */}
+        
           <a href="/" className="text-decoration-none d-md-none d-flex align-items-center" style={{ color: 'var(--color-text-secondary)' }}>
             <i className="bi bi-box-arrow-up-left fs-4"></i>
           </a>
           
-          {/* Botón Volver (En PC se ve normal con texto) */}
+        
           <a href="/" className="text-decoration-none d-none d-md-flex align-items-center gap-1 me-4" style={{ color: 'var(--color-text-secondary)' }}>
             <i className="bi bi-box-arrow-up-left"></i> Volver a la web
           </a>
         </div>
         
-        {/* Buscador (Ahora ocupa todo el ancho disponible limpio) */}
+    
         <div className="input-group w-100" style={{ maxWidth: '350px' }}>
           <span className="input-group-text bg-transparent border-end-0" style={{ borderColor: 'var(--color-border)' }}>
             <i className="bi bi-search" style={{ color: 'var(--color-text-secondary)' }}></i>
@@ -69,10 +68,8 @@ export const AdminDashboard = () => {
         </div>
       </header>
 
-      {/* ================= CONTENEDOR INFERIOR ================= */}
       <div className="d-flex flex-column flex-md-row flex-grow-1 overflow-hidden">
-        
-        {/* ================= SIDEBAR ================= */}
+
         <aside 
           className="sidebar-admin d-flex flex-row flex-md-column p-2 p-md-3 overflow-x-auto" 
           style={{ backgroundColor: 'var(--color-navbar)' }}
@@ -121,7 +118,7 @@ export const AdminDashboard = () => {
 
           </ul>
           
-          {/* Cerrar sesión en PC se ve abajo del todo del menú lateral */}
+          
           <div className="mt-auto border-top pt-3 d-none d-md-block" style={{ borderColor: 'var(--color-border)' }}>
             <button className="nav-link w-100 text-start text-danger d-flex align-items-center gap-2 fw-medium" style={{ backgroundColor: 'transparent', border: 'none' }}>
               <i className="bi bi-box-arrow-right"></i> Cerrar Sesión
@@ -129,15 +126,14 @@ export const AdminDashboard = () => {
           </div>
         </aside>
 
-        {/* ================= CONTENIDO PRINCIPAL ================= */}
+       
         <main className="p-3 p-md-5 flex-grow-1 overflow-auto" style={{ backgroundColor: 'var(--color-card)' }}>
           {renderizarVista()}
         </main>
         
       </div>
 
-      {/* ================= FOOTER MÓVIL (Botón de Cerrar Sesión) ================= */}
-      {/* Esto solo aparece en pantallas chicas (celulares) y se queda pegado abajo */}
+  
       <div className="d-md-none p-3 border-top mt-auto shadow-sm" style={{ backgroundColor: 'var(--color-card)', borderColor: 'var(--color-border)' }}>
         <button className="btn btn-outline-danger w-100 d-flex align-items-center justify-content-center gap-2 fw-medium">
           <i className="bi bi-box-arrow-right"></i> Cerrar Sesión
