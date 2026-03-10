@@ -3,8 +3,12 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import "../../css/login.css";
 import imagenlogin from "../../assets/imagen1.webp";
+import { useNavigate } from "react-router-dom";
+import { logIn } from "../../helpers/auth";
+import AlertApp from "../../components/AlertApp";
 
 const LoginScreen = () => {
+  const navigate = useNavigate();
   const [response, setResponse] = useState();
   const { loadUserData } = useContext(UserContext);
 
@@ -43,6 +47,7 @@ const LoginScreen = () => {
                 placeholder="juan.perez@ejemplo.com"
                 {...register("email", { required: "El email es obligatorio" })}
               />
+                 {errors.email && <span style={{ color: "red", fontSize: "12px" }}>{errors.email.message}</span>}
 
               <label>Contraseña</label>
               <div className="password-wrapper">
@@ -55,12 +60,15 @@ const LoginScreen = () => {
                 />
                 <span className="eye"></span>
               </div>
-              {errors.password && <span>{errors.password.message}</span>}
+              {errors.password && <span style={{ color: "red", fontSize: "12px" }}>{errors.password.message}</span>}
 
               <button type="submit" className="login-button">
                 {isSubmitting ? "Ingresando..." : "Iniciar sesión"}
               </button>
             </form>
+            {!response?.ok && response && (
+              <AlertApp message={response?.message} />
+            )}
 
             <div className="register-link">
               ¿No tienes cuenta? <span>Registrate acá</span>

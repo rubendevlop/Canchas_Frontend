@@ -1,4 +1,4 @@
-const url = "123456"
+const url = "http://localhost:4200/api/auth/"
 
 
 
