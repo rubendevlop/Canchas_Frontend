@@ -1,14 +1,16 @@
 import { Routes, Route } from "react-router-dom";
+import { AppRouter } from './routes/AppRouter';
 import LoginScreen from './views/auth/LoginScreen'
 import HomeScreen from "./views/HomeScreen";
 
-const App = () => {
+
+
+
+function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<LoginScreen />} />
-      <Route path="/" element={<HomeScreen />} />
-    </Routes>
-  )
+    <AppRouter />
+  );
 }
 
-export default App
+export default App;
+
