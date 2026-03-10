@@ -1,0 +1,44 @@
+import React from 'react';
+import "../css/navbar.css"
+
+const Navbar = () => {
+  return (
+    <nav className="navbar-custom">
+      <div className="container-fluid d-flex justify-content-center">
+        <ul className="nav-list d-flex list-unstyled mb-0">
+          
+          <li className="nav-item-custom">
+            <a href="/" className="nav-link-custom active">
+              <i className="bi bi-house-door"></i>
+              <span>Inicio</span>
+            </a>
+          </li>
+
+          <li className="nav-item-custom">
+            <a href="/reservas" className="nav-link-custom">
+              <i className="bi bi-calendar-event"></i>
+              <span>Reservas</span>
+            </a>
+          </li>
+
+          <li className="nav-item-custom">
+            <a href="/tienda" className="nav-link-custom">
+              <i className="bi bi-bag-check"></i>
+              <span>Tienda</span>
+            </a>
+          </li>
+
+          <li className="nav-item-custom">
+            <a href="/perfil" className="nav-link-custom">
+              <i className="bi bi-person"></i>
+              <span>Perfil</span>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+    </nav>
+  );
+};
+
+export default Navbar;
