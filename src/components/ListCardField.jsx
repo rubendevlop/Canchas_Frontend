@@ -1,67 +1,40 @@
-import CardField from './CardField';
-import canchatechada  from "../assets/canchatechada.webp"
-import { useState } from 'react';
-import ReserveModal from './ReserveModal';
-
-const courts = [
-  {
-    id: 1,
-    name: "Cancha 1 - Techada",
-    type: "Futbol 5",
-    surface: "Césped Sintético",
-    cover: "Techada",
-    price: "22.000",
-    image: canchatechada
-  },
-  {
-    id: 2,
-    name: "Cancha 2",
-    type: "Futbol 5",
-    surface: "Césped Sintético",
-    cover: "Exterior",
-    price: "18.000",
-    image: canchatechada
-  },
-   {
-    id: 3,
-    name: "Cancha 2",
-    type: "Futbol 5",
-    surface: "Césped Sintético",
-    cover: "Exterior",
-    price: "18.000",
-    image: canchatechada
-  },
-   {
-    id: 4,
-    name: "Cancha 2",
-    type: "Futbol 5",
-    surface: "Césped Sintético",
-    cover: "Exterior",
-    price: "18.000",
-    image: canchatechada
-  }
-];
-
+import CardField from "./CardField";
+import { useState, useEffect } from "react";
+import ReserveModal from "./ReserveModal";
+import { getField } from "../helpers/field";
 
 const ListCardField = () => {
   const [selectedCourt, setSelectedCourt] = useState(null);
+
+  const [fields, setFields] = useState([]);
+
+  useEffect(() => {
+    const fetchFields = async () => {
+      const data = await getField();
+      setFields(data.fields);
+    };
+
+    fetchFields();
+  }, []);
   return (
     <div className="container px-4">
-         <div className="row">
-           {courts.map((court) => (
-             <CardField key={court.id} court={court}  openModal={() => setSelectedCourt(court)}/>
-           ))}
-         </div>
-          {selectedCourt && (
+      <div className="row">
+        {fields.map((field) => (
+          <CardField
+            key={field._id}
+            court={field}
+            openModal={() => setSelectedCourt(field)}
+          />
+        ))}
+      </div>
+
+      {selectedCourt && (
         <ReserveModal
           court={selectedCourt}
           closeModal={() => setSelectedCourt(null)}
         />
       )}
-       </div>
-   
-  )
-}
-
-export default ListCardField
-
+    </div>
+  );
+};
+export default ListCardField;
