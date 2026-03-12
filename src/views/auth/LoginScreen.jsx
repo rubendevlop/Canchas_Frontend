@@ -8,6 +8,7 @@ import { logIn } from "../../helpers/auth";
 import AlertApp from "../../components/AlertApp";
 import visible from "../../assets/visible.png";
 import invisible from "../../assets/invisible.png";
+import regresar from "../../assets/regresar.png";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
@@ -36,7 +37,9 @@ const LoginScreen = () => {
       <div className="row min-vh-100">
         <div className="col-12 col-lg-7 d-flex justify-content-center align-items-center abajo">
           <div className="login-card">
-            <button className="back-button"></button>
+            <Link to="/" className="back-button">
+              <img src={regresar} alt="regresar al inicio" />
+            </Link>
 
             <div className="circulo"></div>
 
@@ -87,7 +90,10 @@ const LoginScreen = () => {
             )}
 
             <div className="register-link">
-              ¿No tienes cuenta? <Link to="/register" className="link-register" ><span>Registrate acá</span></Link>
+              ¿No tienes cuenta?{" "}
+              <Link to="/register" className="link-register">
+                <span>Registrate acá</span>
+              </Link>
             </div>
           </div>
         </div>
