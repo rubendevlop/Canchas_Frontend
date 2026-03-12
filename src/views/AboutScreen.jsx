@@ -1,4 +1,6 @@
 import cancha from "../assets/cancha.webp"
+import facu from "../assets/facu.webp"
+import ruben from "../assets/ruben.webp"
 import 'font-awesome/css/font-awesome.min.css';
 import "../css/about.css"
 
@@ -20,30 +22,30 @@ const AboutScreen = () => {
                         <h4>Cristian Bustos</h4>
                         <div className="ab-line"></div>
                         <div className="cont-icons">
-                            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
-                            <a href=""><i class="fa fa-github" aria-hidden="true"></i></a>
+                            <a target="_blank" href="https://www.linkedin.com/in/cristian-miguel-bustos-a8019426a"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+                            <a target="_blank" href="https://github.com/Cristhianbsts"><i class="fa fa-github" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div className="img_container">
                         <div>
-                            <img alt="Rubén Lopez" src={cancha} />
+                            <img alt="Rubén Lopez" src={ruben} />
                         </div>
                         <h4>Rubén Lopez</h4>
                         <div className="ab-line"></div>
                         <div className="cont-icons">
-                            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
-                            <a href=""><i class="fa fa-github" aria-hidden="true"></i></a>
+                            <a target="_blank" href="https://www.linkedin.com/in/ruben-lopez-a3006120a/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+                            <a target="_blank" href="https://github.com/rubendevlop"><i class="fa fa-github" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div className="img_container">
                         <div>
-                            <img alt="Facundo Vera" src={cancha} />
+                            <img alt="Facundo Vera" src={facu} />
                         </div>
                         <h4>Facundo Vera</h4>
                         <div className="ab-line"></div>
                         <div className="cont-icons">
-                            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
-                            <a href=""><i class="fa fa-github" aria-hidden="true"></i></a>
+                            <a target="_blank" href="https://www.linkedin.com/in/facundo-vera-175101378/"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+                            <a target="_blank" href="https://github.com/Facundo-Vera"><i class="fa fa-github" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div className="img_container">
@@ -53,19 +55,19 @@ const AboutScreen = () => {
                         <h4>Michael Medina</h4>
                         <div className="ab-line"></div>
                         <div className="cont-icons">
-                            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
-                            <a href=""><i class="fa fa-github" aria-hidden="true"></i></a>
+                            <a target="_blank" href="https://www.linkedin.com/in/michael-rony-medina-velasco-832b42382"><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+                            <a target="_blank" href="https://github.com/Michael110908"><i class="fa fa-github" aria-hidden="true"></i></a>
                         </div>
                     </div>
                     <div className="img_container">
                         <div>
-                            <img alt="Martín Mayol" src={cancha} />
+                            <img alt="Martín Mayol" src="https://s2.ppllstatics.com/mujerhoy/www/multimedia/202502/11/media/cortadas/zuckeberg1-k7bF-U230828106152o7E-1248x1248@MujerHoy.jpg" />
                         </div>
                         <h4>Martín Mayol</h4>
                         <div className="ab-line"></div>
                         <div className="cont-icons">
-                            <a href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
-                            <a href=""><i class="fa fa-github" aria-hidden="true"></i></a>
+                            <a target="_blank" href=""><i class="fa fa-linkedin-square" aria-hidden="true"></i></a>
+                            <a target="_blank" href="https://github.com/Nitram135"><i class="fa fa-github" aria-hidden="true"></i></a>
                         </div>
                     </div>
                 </div>
