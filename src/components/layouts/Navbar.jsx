@@ -1,7 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
-import ModalRegistro from './ModalRegistro';
-import "../css/navbar.css"
+import ModalRegistro from '../ModalRegistro';
+import "../../css/navbar.css"
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
