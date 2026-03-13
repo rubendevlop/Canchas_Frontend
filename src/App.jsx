@@ -1,22 +1,16 @@
-import CardProduct from "./components/CardProduct"
-import ModalRegistro from "./components/ModalRegistro";
-import EcommerceView from "./views/EcommerceView"
-import { useState } from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Navbar from "./components/Navbar";
+import { Routes, Route } from "react-router-dom";
+import { AppRouter } from './routes/AppRouter';
+import LoginScreen from './views/auth/LoginScreen'
+import HomeScreen from "./views/HomeScreen";
+
 
 
 
 function App() {
-
-
-  
-
   return (
-    <> 
-      <Navbar/>
-    </>
-  )
+    <AppRouter />
+  );
 }
 
-export default App
+export default App;
+
