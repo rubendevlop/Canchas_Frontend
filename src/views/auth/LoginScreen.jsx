@@ -3,14 +3,18 @@ import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import "../../css/login.css";
 import imagenlogin from "../../assets/imagen1.webp";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { logIn } from "../../helpers/auth";
 import AlertApp from "../../components/AlertApp";
+import visible from "../../assets/visible.png";
+import invisible from "../../assets/invisible.png";
+import regresar from "../../assets/regresar.png";
 
 const LoginScreen = () => {
   const navigate = useNavigate();
   const [response, setResponse] = useState();
   const { loadUserData } = useContext(UserContext);
+  const [showPassword, setShowPassword] = useState(false);
 
   const {
     register,
@@ -33,7 +37,9 @@ const LoginScreen = () => {
       <div className="row min-vh-100">
         <div className="col-12 col-lg-7 d-flex justify-content-center align-items-center abajo">
           <div className="login-card">
-            <button className="back-button"></button>
+            <Link to="/" className="back-button">
+              <img src={regresar} alt="regresar al inicio" />
+            </Link>
 
             <div className="circulo"></div>
 
@@ -47,20 +53,33 @@ const LoginScreen = () => {
                 placeholder="juan.perez@ejemplo.com"
                 {...register("email", { required: "El email es obligatorio" })}
               />
-                 {errors.email && <span style={{ color: "red", fontSize: "12px" }}>{errors.email.message}</span>}
+              {errors.email && (
+                <span style={{ color: "red", fontSize: "12px" }}>
+                  {errors.email.message}
+                </span>
+              )}
 
               <label>Contraseña</label>
               <div className="password-wrapper">
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   placeholder="••••••••"
                   {...register("password", {
                     required: "La contraseña es obligatoria",
                   })}
                 />
-                <span className="eye"></span>
+                <img
+                  src={showPassword ? visible : invisible}
+                  alt="Mostrar contraseña"
+                  className="eye"
+                  onClick={() => setShowPassword(!showPassword)}
+                />
               </div>
-              {errors.password && <span style={{ color: "red", fontSize: "12px" }}>{errors.password.message}</span>}
+              {errors.password && (
+                <span style={{ color: "red", fontSize: "12px" }}>
+                  {errors.password.message}
+                </span>
+              )}
 
               <button type="submit" className="login-button">
                 {isSubmitting ? "Ingresando..." : "Iniciar sesión"}
@@ -71,7 +90,10 @@ const LoginScreen = () => {
             )}
 
             <div className="register-link">
-              ¿No tienes cuenta? <span>Registrate acá</span>
+              ¿No tienes cuenta?{" "}
+              <Link to="/register" className="link-register">
+                <span>Registrate acá</span>
+              </Link>
             </div>
           </div>
         </div>
