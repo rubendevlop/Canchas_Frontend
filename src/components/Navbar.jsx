@@ -2,6 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import ModalRegistro from './ModalRegistro';
 import "../css/navbar.css"
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
 
@@ -38,10 +39,10 @@ const Navbar = () => {
           </li>
 
           <li className="nav-item-custom">
-            <a href="#" className="nav-link-custom"onClick={() => setMostrarModal(true)}>
+            <Link to="/register" className="nav-link-custom"onClick={() => setMostrarModal(true)}>
               <i className="bi bi-person"></i>
               <span>Perfil</span>
-            </a>
+            </Link>
           </li>
 
         </ul>
