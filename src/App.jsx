@@ -1,12 +1,16 @@
-import React from 'react'
-import Fields from './views/public/Fields'
+import { Routes, Route } from "react-router-dom";
+import { AppRouter } from './routes/AppRouter';
+import LoginScreen from './views/auth/LoginScreen'
+import HomeScreen from "./views/HomeScreen";
 
-const App = () => {
+
+
+
+function App() {
   return (
-    <div>
-      <Fields/>
-    </div>
-  )
+    <AppRouter />
+  );
 }
 
-export default App
+export default App;
+
