@@ -1,6 +1,8 @@
-import cancha from "../assets/cancha.webp"
+
 import facu from "../assets/facu.webp"
 import ruben from "../assets/ruben.webp"
+import michael from "../assets/michael.webp"
+import cristian from "../assets/cristian.webp"
 import 'font-awesome/css/font-awesome.min.css';
 import "../css/about.css"
 
@@ -17,7 +19,7 @@ const AboutScreen = () => {
                 <div className="container">
                     <div className="img_container">
                         <div>
-                            <img alt="Cristian Bustos" src={cancha} />
+                            <img className="our-imgs" alt="Cristian Bustos" src={cristian} />
                         </div>
                         <h4>Cristian Bustos</h4>
                         <div className="ab-line"></div>
@@ -28,7 +30,7 @@ const AboutScreen = () => {
                     </div>
                     <div className="img_container">
                         <div>
-                            <img alt="Rubén Lopez" src={ruben} />
+                            <img className="our-imgs" alt="Rubén Lopez" src={ruben} />
                         </div>
                         <h4>Rubén Lopez</h4>
                         <div className="ab-line"></div>
@@ -39,7 +41,7 @@ const AboutScreen = () => {
                     </div>
                     <div className="img_container">
                         <div>
-                            <img alt="Facundo Vera" src={facu} />
+                            <img className="our-imgs" alt="Facundo Vera" src={facu} />
                         </div>
                         <h4>Facundo Vera</h4>
                         <div className="ab-line"></div>
@@ -50,7 +52,7 @@ const AboutScreen = () => {
                     </div>
                     <div className="img_container">
                         <div>
-                            <img alt="Michael Medina" src={cancha} />
+                            <img className="our-imgs" alt="Michael Medina" src={michael} />
                         </div>
                         <h4>Michael Medina</h4>
                         <div className="ab-line"></div>
@@ -61,7 +63,7 @@ const AboutScreen = () => {
                     </div>
                     <div className="img_container">
                         <div>
-                            <img alt="Martín Mayol" src="https://s2.ppllstatics.com/mujerhoy/www/multimedia/202502/11/media/cortadas/zuckeberg1-k7bF-U230828106152o7E-1248x1248@MujerHoy.jpg" />
+                            <img className="our-imgs" alt="Martín Mayol" src="https://s2.ppllstatics.com/mujerhoy/www/multimedia/202502/11/media/cortadas/zuckeberg1-k7bF-U230828106152o7E-1248x1248@MujerHoy.jpg" />
                         </div>
                         <h4>Martín Mayol</h4>
                         <div className="ab-line"></div>
