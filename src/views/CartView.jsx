@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "../hooks/useCart";
+import { createCartPaymentRequest } from "../services/paymentService";
 import "../css/cssRoot.css";
 import "../css/cartView.css";
 
@@ -9,6 +10,7 @@ const CartView = () => {
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(true);
   const [recommendationError, setRecommendationError] = useState("");
+  const [loadingPayment, setLoadingPayment] = useState(false);
 
   useEffect(() => {
     const fetchRecommendedProducts = async () => {
@@ -24,7 +26,9 @@ const CartView = () => {
         }
 
         const products = data.items || data.products || data || [];
-        setRecommendedProducts(Array.isArray(products) ? products.slice(0, 6) : []);
+        setRecommendedProducts(
+          Array.isArray(products) ? products.slice(0, 6) : []
+        );
       } catch (error) {
         console.error("Error en recomendados:", error);
         setRecommendationError(error.message || "Error cargando productos");
@@ -56,6 +60,26 @@ const CartView = () => {
       currency: "ARS",
       maximumFractionDigits: 0,
     }).format(Number(value) || 0);
+  };
+
+  const handleCheckout = async () => {
+    try {
+      setLoadingPayment(true);
+
+      const data = await createCartPaymentRequest();
+
+      if (!data?.url) {
+        throw new Error("Mercado Pago no devolvió una URL de pago");
+      }
+
+      // Redirección a la pasarela de pago
+      window.location.href = data.url;
+    } catch (error) {
+      console.error("Error iniciando pago:", error);
+      alert(error.message || "No se pudo iniciar el pago");
+    } finally {
+      setLoadingPayment(false);
+    }
   };
 
   if (loadingCart) {
@@ -94,7 +118,9 @@ const CartView = () => {
             <div className="cart-section-card">
               <div className="cart-section-header">
                 <h2>Productos</h2>
-                <span>{totalProducts} {totalProducts === 1 ? "unidad" : "unidades"}</span>
+                <span>
+                  {totalProducts} {totalProducts === 1 ? "unidad" : "unidades"}
+                </span>
               </div>
 
               {items.length === 0 ? (
@@ -106,8 +132,9 @@ const CartView = () => {
                 <div className="cart-items-list">
                   {items.map((item, index) => {
                     const product = item.product || {};
-                    const title = product.name || "Producto sin nombre";
-                    const image = product.image || product.images?.[0] || "";
+                    const title = product.name || item.name || "Producto sin nombre";
+                    const image =
+                      product.image || item.image || product.images?.[0] || "";
                     const quantity = Number(item.quantity) || 0;
                     const price = Number(item.price) || 0;
                     const subtotal = Number(item.subtotal) || price * quantity;
@@ -225,8 +252,12 @@ const CartView = () => {
                 <strong>{formatPrice(total)}</strong>
               </div>
 
-              <button className="cart-checkout-button">
-                Continuar compra
+              <button
+                className="cart-checkout-button"
+                onClick={handleCheckout}
+                disabled={items.length === 0 || loadingPayment}
+              >
+                {loadingPayment ? "Redirigiendo..." : "Continuar compra"}
               </button>
 
               <p className="cart-summary-note">
