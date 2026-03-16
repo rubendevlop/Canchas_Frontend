@@ -22,7 +22,7 @@ const ReserveModal = ({ court, closeModal }) => {
         <p className="mt-3">Horarios Disponibles</p>
 
         <div className="reserve-footer">
-          <span>{court.price}</span>
+          <span>{court.pricePerHour}</span>
 
           <button className="btn-reserve" onClick={closeModal}>
             Confirmar
