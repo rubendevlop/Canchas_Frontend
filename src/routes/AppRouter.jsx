@@ -7,7 +7,8 @@ import ModalRegistro from '../components/ModalRegistro';
 import CartView from '../views/CartView';
 import EcommerceView from '../views/EcommerceView';
 import ProductDetailView from "../views/ProductDetailView";
-import { MainLayout } from '../layout/MainLayout'; 
+import { MainLayout } from '../layout/MainLayout';
+import { ProtectedRoute } from './ProtectedRoute';
 
 export const AppRouter = () => {
   return (
@@ -21,9 +22,11 @@ export const AppRouter = () => {
       </Route>
 
 
-      {/* --- RUTAS INDEPENDIENTES --- */}
-
-      <Route path="/admin/*" element={<AdminDashboard />} /> 
+      {/* --- RUTAS PROTEGIDAS --- */}
+      <Route element={<ProtectedRoute adminOnly={true} />}>
+        <Route path="/admin/*" element={<AdminDashboard />} />
+      </Route>
+      
       
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<ModalRegistro />} />
