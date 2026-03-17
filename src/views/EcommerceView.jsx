@@ -3,7 +3,7 @@ import CardProduct from '../components/CardProduct'
 import "../css/viewsCSS/EcommerceView.css"
 import SearchBar from '../components/SearchBar'
 import Pagination from '../components/Pagination'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/layouts/Navbar'
 
 export default function EcommerceView() {
 
