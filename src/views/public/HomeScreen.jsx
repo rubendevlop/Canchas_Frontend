@@ -5,6 +5,9 @@ import principalImg from "../../assets/principal-img.webp"
 import ducha from "../../assets/ducha.webp"
 import refresco from "../../assets/refresco.webp"
 import { useState, useEffect } from "react";
+import HomeCardList from "../../components/HomeCardList";
+import "../../css/home-card.css"
+import { Link } from "react-router-dom";
 
 const HomeScreen = () => {
 
@@ -123,47 +126,14 @@ const HomeScreen = () => {
                 </div>
             </section>
             <section className="market">
-                <h2>Productos Sugeridos</h2>
-                <p>Equipate antes de entrar a la cancha</p>
-                <button className="availability-btn">
-                    Ver más productos <i className="fa fa-calendar-o" aria-hidden="true"></i>
-                </button>
-                <div className="cards-container">
-                    {
-                        productos.map((p, index)=>{
-                            <div key={index} className="card-container">
-      {/* Imagen y Badge de Stock */}
-      <div className="card-image-wrapper">
-        <img src={p.image} alt={p.name} className="card-image" />
-        {p.isStock && (
-          <span className="stock-badge">Stock disponible</span>
-        )}
-      </div>
-
-      {/* Cuerpo de la tarjeta */}
-      <div className="card-body">
-        <h2 className="card-title">{p.name}</h2>
-        
-        <div className="tags-container">
-          <span className="tag-item">{p.category}</span>
-          <span className="tag-item">{p.tag}</span>
-        </div>
-
-        <hr className="divider" />
-
-        {/* Footer: Precio y Botón */}
-        <div className="card-footer">
-          <div className="price-section">
-            <span className="price-value">{p.price}</span>
-            {p.isOffer && <span className="offer-label">oferta</span>}
-          </div>
-          <button className="add-button">Agregar</button>
-        </div>
-      </div>
-    </div>
-                        })
-                    }
-                </div>
+                <h2 className="market-h2">Productos Sugeridos</h2>
+                <p className="market-p">Equipate antes de entrar a la cancha</p>
+                <HomeCardList/>
+                <Link to="/products">
+                    <button className="availability-btn">
+                        Ver más productos <i className="fa fa-calendar-o" aria-hidden="true"></i>
+                    </button>
+                </Link>
             </section>
         </main>
     )
