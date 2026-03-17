@@ -1,9 +1,14 @@
-import ErrorScreen from "./views/errorScreen"
+import { AppRouter } from './routes/AppRouter';
+
+
+
+
 
 function App() {
   return (
-    <ErrorScreen/>
-  )
+    <AppRouter />
+  );
 }
 
-export default App
+export default App;
+
