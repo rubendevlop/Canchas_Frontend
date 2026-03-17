@@ -4,15 +4,23 @@ import { AdminDashboard } from '../views/AdminDashboard';
 import LoginScreen from '../views/auth/LoginScreen';
 import HomeScreen from '../views/HomeScreen';
 import ModalRegistro from '../components/ModalRegistro';
+<<<<<<< HEAD
 import CartView from '../views/CartView';
 import EcommerceView from '../views/EcommerceView';
 import ProductDetailView from "../views/ProductDetailView";
 import { MainLayout } from '../layout/MainLayout'; 
+=======
+// import CartView from '../views/CartView';
+import EcommerceView from '../views/EcommerceView';
+//import ProductDetailView from "../views/ProductDetailView";
+import PagesLayout from '../layout/PagesLayout';
+>>>>>>> fix/layout
 
 export const AppRouter = () => {
   return (
     <Routes>
 
+<<<<<<< HEAD
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/cart" element={<CartView />} />
@@ -25,6 +33,20 @@ export const AppRouter = () => {
 
       <Route path="/admin/*" element={<AdminDashboard />} /> 
       
+=======
+      <Route element={<PagesLayout />}>
+        <Route path="/" element={<HomeScreen />} />
+        {/* <Route path="/cart" element={<CartView />} /> */}
+        <Route path="/ecommerce" element={<EcommerceView />} />
+        {/* <Route path="/producto/:id" element={<ProductDetailView />} /> */}
+      </Route>
+
+
+     
+
+      <Route path="/admin/" element={<AdminDashboard />} /> 
+
+>>>>>>> fix/layout
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<ModalRegistro />} />
 
