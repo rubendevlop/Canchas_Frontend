@@ -101,6 +101,17 @@
     background-color: #178a31;
 }
 
+.card-link-wrapper {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.2s ease;
+}
+
+.card-link-wrapper:hover {
+    transform: translateY(-5px);
+}
+
 @media screen and (min-width: 375px) {
     .card-container{
         width: 320px;
