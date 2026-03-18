@@ -7,7 +7,7 @@ const ContactScreen = () => {
         const formData = new FormData(e.target);
         const data = Object.fromEntries(formData);
         try {
-            const response = await fetch(`${import.meta.env.VITE_URL}/contact`, {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/contact`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
