@@ -21,8 +21,12 @@ const CartView = () => {
 
   const fetchCart = async () => {
     try {
-      const response = await fetch(`${API_URL}/cart`, {
+      const response = await fetch(`${API_URL}/cart?t=${new Date().getTime()}`, {
         credentials: "include",
+        headers: {
+          "Cache-Control": "no-cache, no-store, must-revalidate",
+          "Pragma": "no-cache"
+        }
       });
 
       const data = await response.json();
