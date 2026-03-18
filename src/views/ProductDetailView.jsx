@@ -18,7 +18,7 @@ const ProductDetailView = () => {
       return image;
     }
 
-    return `http://localhost:2500${image.startsWith("/") ? image : `/${image}`}`;
+    return `${import.meta.env.VITE_URL}${image.startsWith("/") ? image : `/${image}`}`;
   };
 
   useEffect(() => {
@@ -27,7 +27,7 @@ const ProductDetailView = () => {
         setLoadingProduct(true);
         setErrorProduct("");
 
-        const response = await fetch(`${import.meta.env.VITE_URL}/products`);
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/products`);
         const data = await response.json();
 
         if (!response.ok) {

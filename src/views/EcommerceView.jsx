@@ -27,7 +27,7 @@ export default function EcommerceView() {
         setLoading(true)
         setError("")
 
-        const response = await fetch(`${import.meta.env.VITE_URL}/products`)
+        const response = await fetch(`${import.meta.env.VITE_API_URL}/products`)
         const data = await response.json()
 
         if (!response.ok) {

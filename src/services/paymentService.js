@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:2500/api/payment";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/payment`;
 
 export const createCartPaymentRequest = async () => {
   const response = await fetch(API_URL, {

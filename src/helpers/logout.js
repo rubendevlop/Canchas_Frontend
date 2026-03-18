@@ -1,4 +1,4 @@
-const url = `${import.meta.env.VITE_URL}/logout`;
+const url = `${import.meta.env.VITE_API_URL}/logout`;
 
 const logOut = async () => {
   const response = await fetch(url, {

@@ -1,4 +1,4 @@
-const url = 'http://localhost:2500/api/cart';
+const url = `${import.meta.env.VITE_API_URL}/api/cart`;
 
 const fetchConfig = (method, body = null) => {
     const options = {

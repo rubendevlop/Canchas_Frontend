@@ -20,7 +20,7 @@ const CardField = ({ court, openModal }) => {
       return img;
     }
 
-    return `http://localhost:3002${img.startsWith("/") ? img : `/${img}`}`;
+    return `${import.meta.env.VITE_API_URL}${img.startsWith("/") ? img : `/${img}`}`;
   };
 
   const imageSrc = buildImage(image);

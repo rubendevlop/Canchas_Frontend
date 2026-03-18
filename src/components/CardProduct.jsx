@@ -16,7 +16,7 @@ export default function CardProduct({ product }) {
       return image;
     }
 
-    return `http://localhost:3002${image.startsWith("/") ? image : `/${image}`}`;
+    return `${import.meta.env.VITE_API_URL}${image.startsWith("/") ? image : `/${image}`}`;
   };
 
   const productImage = construirImagen(product.image || product.images?.[0]);

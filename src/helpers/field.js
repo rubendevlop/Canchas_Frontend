@@ -1,4 +1,4 @@
-const url = "http://localhost:2500/api/fields";
+const url = `${import.meta.env.VITE_API_URL}/fields`;
 
 const getField = async () => {
   try {

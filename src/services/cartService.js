@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:2500/api/cart";
+const API_URL = `${import.meta.env.VITE_API_URL}/api/cart`;
 
 export const getCartRequest = async () => {
   const response = await fetch(API_URL, {
