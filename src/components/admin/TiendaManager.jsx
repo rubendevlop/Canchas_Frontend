@@ -116,7 +116,7 @@ export const TiendaManager = () => {
     if (!window.confirm(`¿Seguro que deseas eliminar "${nombre}"?`)) return;
     const endpoint = tipo === 'prod' ? 'products' : 'categories';
     try {
-      const res = await fetch(`${import.meta.env.VITE_URL}/${endpoint}/${id}`, { method: 'DELETE', credentials: 'include' });
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/${endpoint}/${id}`, { method: 'DELETE', credentials: 'include' });
       const data = await res.json();
       if (data.ok) cargarDatos();
     } catch (error) {

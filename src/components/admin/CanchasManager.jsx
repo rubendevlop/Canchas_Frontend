@@ -10,7 +10,7 @@ export const CanchasManager = () => {
 
   const obtenerCanchas = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_URL}/fields`, { credentials: 'include' });
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/fields`, { credentials: 'include' });
       const data = await response.json();
       if (data.ok) setCanchas(data.fields);
     } catch (error) {
@@ -76,7 +76,7 @@ export const CanchasManager = () => {
   const borrarCancha = async (id, nombre) => {
     if (!window.confirm(`¿Baja para "${nombre}"?`)) return;
     try {
-      const response = await fetch(`http://localhost:3002/api/fields/${id}`, { method: 'DELETE', credentials: 'include' });
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/fields/${id}`, { method: 'DELETE', credentials: 'include' });
       const data = await response.json();
       if (data.ok) obtenerCanchas();
     } catch (error) {
