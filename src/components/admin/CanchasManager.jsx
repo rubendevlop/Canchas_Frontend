@@ -70,6 +70,7 @@ export const CanchasManager = () => {
       }
     } catch (error) {
       console.error("Error al guardar:", error);
+      alert("Error de conexión con el servidor (posiblemente CORS o servidor caído). Revisá la consola.");
     }
   };
 

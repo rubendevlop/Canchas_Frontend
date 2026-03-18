@@ -84,6 +84,7 @@ export const TiendaManager = () => {
       }
     } catch (error) {
       console.error("Error al guardar producto:", error);
+      alert("Error de conexión con el servidor (posiblemente CORS). Revisá la consola.");
     }
   };
 
@@ -109,6 +110,7 @@ export const TiendaManager = () => {
       }
     } catch (error) {
       console.error("Error al guardar categoría:", error);
+      alert("Error de conexión con el servidor (posiblemente CORS). Revisá la consola.");
     }
   };
 
