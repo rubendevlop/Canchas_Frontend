@@ -1,12 +1,17 @@
 import CardField from "./CardField";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ReserveModal from "./ReserveModal";
 import { getField } from "../helpers/field";
+import { UserContext } from "../context/UserContext";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ListCardField = () => {
   const [selectedCourt, setSelectedCourt] = useState(null);
   const [fields, setFields] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user, loadUserData } = useContext(UserContext);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fetchFields = async () => {
@@ -33,6 +38,18 @@ const ListCardField = () => {
     fetchFields();
   }, []);
 
+  const handleOpenModal = async (field) => {
+    const currentUser = user?._id ? user : await loadUserData();
+
+    if (!currentUser?._id) {
+      alert("Debes iniciar sesión para reservar una cancha");
+      navigate("/login", { state: { from: location } });
+      return;
+    }
+
+    setSelectedCourt(field);
+  };
+
   if (loading) {
     return <div className="container px-4">Cargando canchas...</div>;
   }
@@ -47,7 +64,7 @@ const ListCardField = () => {
             <CardField
               key={field._id}
               court={field}
-              openModal={() => setSelectedCourt(field)}
+              openModal={() => handleOpenModal(field)}
             />
           ))
         )}

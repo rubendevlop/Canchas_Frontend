@@ -32,6 +32,7 @@ export const reserveBooking = async (fieldId, date, time, userId) => {
       headers: {
         "Content-Type": "application/json",
       },
+      credentials: "include",
       body: JSON.stringify({
         fieldId,
         date,
