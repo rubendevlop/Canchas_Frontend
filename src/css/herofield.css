@@ -28,9 +28,11 @@
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0.37),
-      rgba(0, 0, 0, 0));
+  background:
+    linear-gradient(to bottom,
+      rgba(0, 0, 0, 0.62),
+      rgba(0, 0, 0, 0.28) 45%,
+      rgba(0, 0, 0, 0.42) 100%);
   z-index: 1;
 }
 
@@ -52,20 +54,27 @@
   margin-top: 3rem;
   line-height: 1.2;
   max-width: 650px;
+  color: #ffffff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
 }
 
 
 /* descripción */
 
 .hero-description {
-  opacity: .9;
+  opacity: 1;
   margin-top: 12px;
   max-width: 520px;
   font-size: .95rem;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
 }
 
 .hero-badge {
   background-color: var(--color-navbar);
+  color: #0d5c2c !important;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
 }
 
 
@@ -75,22 +84,26 @@
 ========================= */
 
 .stat-card {
-  background: rgba(255, 255, 255, .08);
-  backdrop-filter: blur(10px);
+  background: rgba(18, 31, 22, .42);
+  backdrop-filter: blur(12px);
   border-radius: 10px;
   padding: 12px;
-  border: 1px solid rgba(255, 255, 255, .15);
+  border: 1px solid rgba(255, 255, 255, .18);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.2);
 }
 
 .stat-card h3 {
   margin: 0;
   font-size: 1.2rem;
+  color: #ffffff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
 }
 
 .stat-card p {
   margin: 0;
   font-size: .75rem;
-  opacity: .85;
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 
