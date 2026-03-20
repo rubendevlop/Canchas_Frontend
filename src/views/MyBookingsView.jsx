@@ -109,9 +109,9 @@ const MyBookingsView = () => {
         )}
 
         {!loading && !error && bookings.length > 0 && (
-          <div className="row g-4">
+          <div className="row g-4 justify-content-center">
             {bookings.map((booking) => (
-              <div className="col-12 col-md-6 col-xl-4" key={booking.id}>
+              <div className="col-12 col-md-6 col-xl-6" key={booking.id}>
                 <article className="my-booking-card h-100">
                   <div className="my-booking-card-body">
                     <div className="d-flex justify-content-between align-items-start gap-3 mb-3">

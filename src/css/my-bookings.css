@@ -86,12 +86,14 @@
 
 .my-booking-card {
   width: 100%;
+  max-width: 680px;
   display: block;
   border-radius: 24px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 250, 247, 0.98));
   border: 1px solid rgba(14, 42, 26, 0.08);
   box-shadow: 0 18px 42px rgba(14, 35, 22, 0.08);
+  margin-inline: auto;
 }
 
 .my-booking-card-body {
