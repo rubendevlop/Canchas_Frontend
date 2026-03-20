@@ -80,7 +80,13 @@
   box-shadow: 0 16px 36px rgba(11, 28, 18, 0.08);
 }
 
+.my-bookings-page .row > [class*="col-"] {
+  display: flex;
+}
+
 .my-booking-card {
+  width: 100%;
+  display: block;
   border-radius: 24px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 250, 247, 0.98));
@@ -89,7 +95,12 @@
 }
 
 .my-booking-card-body {
+  width: 100%;
   padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 220px;
 }
 
 .my-booking-date {
@@ -106,6 +117,7 @@
   color: var(--color-title);
   font-weight: 800;
   font-size: 1.35rem;
+  line-height: 1.2;
 }
 
 .my-booking-status {
@@ -137,6 +149,7 @@
 .my-booking-price {
   color: var(--color-text-secondary);
   font-size: 0.94rem;
+  margin-top: auto;
 }
 
 @media (max-width: 767.98px) {
