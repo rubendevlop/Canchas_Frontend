@@ -116,12 +116,23 @@ const Navbar = () => {
                       </Link>
                     </>
                   ) : (
-                    <button
-                      className="dropdown-item-custom logout"
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </button>
+                    <>
+                      {user.role !== "admin" && user.role !== "superadmin" && (
+                        <Link
+                          to="/my-bookings"
+                          className="dropdown-item-custom"
+                          onClick={() => setMostrarDropdown(false)}
+                        >
+                          Mis reservas
+                        </Link>
+                      )}
+                      <button
+                        className="dropdown-item-custom logout"
+                        onClick={handleLogout}
+                      >
+                        Logout
+                      </button>
+                    </>
                   )}
                 </div>
               )}

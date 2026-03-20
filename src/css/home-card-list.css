@@ -11,10 +11,11 @@
         flex-wrap: nowrap;
         overflow-x: auto;
         overflow-y: hidden;
-        gap: 0;
-        padding: 20px 12px 16px;
+        gap: 14px;
+        padding: 20px 14px 18px;
         scroll-snap-type: x mandatory;
         -webkit-overflow-scrolling: touch;
+        scroll-padding-inline: 14px;
     }
 
     .list-card-cont::-webkit-scrollbar {
@@ -27,9 +28,8 @@
     }
 
     .list-card-cont > * {
-        flex: 0 0 86%;
-        width: 86%;
-        scroll-snap-align: center;
-        padding-right: 14px;
+        flex: 0 0 min(86%, 320px);
+        width: min(86%, 320px);
+        scroll-snap-align: start;
     }
 }

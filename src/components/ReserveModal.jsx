@@ -82,8 +82,10 @@ const ReserveModal = ({ court, closeModal }) => {
       }
 
       alert("Reserva realizada correctamente");
+      setSelectedDate(null);
       setSelectedHour(null);
-      await handleSelectDate(selectedDate);
+      setAvailableHours([]);
+      closeModal();
     } catch (error) {
       console.log("Error al reservar:", error);
       alert(error.message || "No se pudo realizar la reserva");
