@@ -86,7 +86,6 @@
 
 .my-booking-card {
   width: 100%;
-  max-width: 2000px;
   display: block;
   border-radius: 24px;
   background:
@@ -103,6 +102,20 @@
   flex-direction: column;
   justify-content: space-between;
   min-height: 220px;
+}
+
+.my-booking-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+
+.my-booking-head-main {
+  min-width: 0;
+  flex: 1 1 240px;
 }
 
 .my-booking-date {
@@ -133,6 +146,8 @@
   font-size: 0.8rem;
   font-weight: 700;
   white-space: nowrap;
+  flex: 0 0 auto;
+  max-width: 100%;
 }
 
 .my-booking-pill {
@@ -170,5 +185,9 @@
 
   .my-booking-card-body {
     padding: 20px;
+  }
+
+  .my-booking-head {
+    gap: 12px;
   }
 }

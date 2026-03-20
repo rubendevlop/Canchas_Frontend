@@ -114,8 +114,8 @@ const MyBookingsView = () => {
               <div className="col-12 col-md-6 col-xl-6" key={booking.id}>
                 <article className="my-booking-card h-100">
                   <div className="my-booking-card-body">
-                    <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
-                      <div>
+                    <div className="my-booking-head">
+                      <div className="my-booking-head-main">
                         <div className="my-booking-date">
                           {formatDisplayDate(booking.date)}
                         </div>
