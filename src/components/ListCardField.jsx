@@ -51,14 +51,22 @@ const ListCardField = () => {
   };
 
   if (loading) {
-    return <div className="container px-4">Cargando canchas...</div>;
+    return (
+      <div className="container px-4">
+        <div className="fields-loading text-center py-5">Cargando canchas...</div>
+      </div>
+    );
   }
 
   return (
     <div className="container px-4">
-      <div className="row col-12">
+      <div className="fields-grid row g-4">
         {fields.length === 0 ? (
-          <p>No hay canchas disponibles</p>
+          <div className="col-12">
+            <div className="fields-empty text-center">
+              No hay canchas disponibles en este momento.
+            </div>
+          </div>
         ) : (
           fields.map((field) => (
             <CardField

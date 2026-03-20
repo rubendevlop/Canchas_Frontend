@@ -71,6 +71,15 @@ const Navbar = () => {
 
             {user && user.role !== "admin" && (
               <li className="nav-item-custom">
+                <NavLink to="/my-bookings" className={buildNavClass}>
+                  <i className="bi bi-calendar2-check"></i>
+                  <span>Mis reservas</span>
+                </NavLink>
+              </li>
+            )}
+
+            {user && user.role !== "admin" && (
+              <li className="nav-item-custom">
                 <NavLink to="/cart" className={buildNavClass}>
                   <span className="nav-icon-wrapper">
                     <i className="bi bi-cart"></i>

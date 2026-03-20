@@ -3,6 +3,7 @@ import { UserContext } from "../context/UserContext";
 import { getField } from "../helpers/field";
 import { formatBookingDateValue, getBookingsByDate } from "../helpers/booking";
 import { generateDays } from "../helpers/date";
+import "../css/my-bookings.css";
 
 const MyBookingsView = () => {
   const { user } = useContext(UserContext);
@@ -60,75 +61,88 @@ const MyBookingsView = () => {
     });
 
   return (
-    <main className="container py-4 py-md-5">
-      <div className="mb-4">
-        <h1 className="fw-bold mb-2" style={{ color: "var(--color-title)" }}>
-          Mis reservas
-        </h1>
-        <p className="text-muted mb-0">
-          Acá ves tus turnos confirmados para los próximos días.
-        </p>
-      </div>
+    <main className="my-bookings-page">
+      <section className="my-bookings-hero container">
+        <div className="my-bookings-hero-card">
+          <span className="my-bookings-kicker">Tus turnos</span>
 
-      {loading && (
-        <div className="text-center py-5">
-          <div className="spinner-border text-success" role="status">
-            <span className="visually-hidden">Cargando...</span>
+          <div className="row g-4 align-items-end">
+            <div className="col-12 col-lg-8">
+              <h1 className="my-bookings-title">Mis reservas</h1>
+              <p className="my-bookings-subtitle">
+                Revisa rapido tus proximos partidos, la cancha asignada y el horario confirmado.
+              </p>
+            </div>
+
+            <div className="col-12 col-lg-4">
+              <div className="my-bookings-summary">
+                <span className="my-bookings-summary-label">Proximas reservas</span>
+                <strong>{bookings.length}</strong>
+              </div>
+            </div>
           </div>
         </div>
-      )}
+      </section>
 
-      {!loading && error && (
-        <div className="alert alert-danger" role="alert">
-          {error}
-        </div>
-      )}
-
-      {!loading && !error && bookings.length === 0 && (
-        <div className="bg-white border rounded-4 shadow-sm p-4 text-center">
-          <h5 className="fw-bold mb-2">Todavía no tenés reservas visibles</h5>
-          <p className="text-muted mb-0">
-            Cuando reserves una cancha, la vas a ver listada acá.
-          </p>
-        </div>
-      )}
-
-      {!loading && !error && bookings.length > 0 && (
-        <div className="row g-3">
-          {bookings.map((booking) => (
-            <div className="col-12 col-md-6 col-xl-4" key={booking.id}>
-              <article className="card border-0 shadow-sm h-100">
-                <div className="card-body p-4">
-                  <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
-                    <div>
-                      <div className="text-muted small text-uppercase fw-semibold mb-1">
-                        {formatDisplayDate(booking.date)}
-                      </div>
-                      <h5 className="fw-bold mb-0" style={{ color: "var(--color-title)" }}>
-                        {booking.fieldName}
-                      </h5>
-                    </div>
-                    <span className="badge text-bg-success">{booking.status}</span>
-                  </div>
-
-                  <div className="d-flex flex-wrap gap-2 mb-3">
-                    <span className="badge rounded-pill text-bg-light border">
-                      {booking.hour}:00 hs
-                    </span>
-                    <span className="badge rounded-pill text-bg-light border">
-                      {formatBookingDateValue(booking.date).slice(0, 10)}
-                    </span>
-                  </div>
-
-                  <div className="small text-muted">
-                    {booking.price ? `Precio registrado: $${booking.price}` : "Precio no disponible"}
-                  </div>
-                </div>
-              </article>
+      <section className="container pb-5">
+        {loading && (
+          <div className="text-center py-5">
+            <div className="spinner-border text-success" role="status">
+              <span className="visually-hidden">Cargando...</span>
             </div>
-          ))}
-        </div>
-      )}
+          </div>
+        )}
+
+        {!loading && error && (
+          <div className="alert alert-danger" role="alert">
+            {error}
+          </div>
+        )}
+
+        {!loading && !error && bookings.length === 0 && (
+          <div className="my-bookings-empty text-center">
+            <h5 className="fw-bold mb-2">Todavia no tenes reservas visibles</h5>
+            <p className="text-muted mb-0">
+              Cuando reserves una cancha, la vas a ver listada aca.
+            </p>
+          </div>
+        )}
+
+        {!loading && !error && bookings.length > 0 && (
+          <div className="row g-4">
+            {bookings.map((booking) => (
+              <div className="col-12 col-md-6 col-xl-4" key={booking.id}>
+                <article className="my-booking-card h-100">
+                  <div className="my-booking-card-body">
+                    <div className="d-flex justify-content-between align-items-start gap-3 mb-3">
+                      <div>
+                        <div className="my-booking-date">
+                          {formatDisplayDate(booking.date)}
+                        </div>
+                        <h5 className="my-booking-field">{booking.fieldName}</h5>
+                      </div>
+                      <span className="my-booking-status">{booking.status}</span>
+                    </div>
+
+                    <div className="d-flex flex-wrap gap-2 mb-3">
+                      <span className="my-booking-pill">{booking.hour}:00 hs</span>
+                      <span className="my-booking-pill">
+                        {formatBookingDateValue(booking.date).slice(0, 10)}
+                      </span>
+                    </div>
+
+                    <div className="my-booking-price">
+                      {booking.price
+                        ? `Precio registrado: $${booking.price}`
+                        : "Precio no disponible"}
+                    </div>
+                  </div>
+                </article>
+              </div>
+            ))}
+          </div>
+        )}
+      </section>
     </main>
   );
 };

@@ -16,7 +16,7 @@
 
 .nav-list {
   width: 100%;
-  max-width: 560px;
+  max-width: 760px;
   justify-content: space-around;
   align-items: flex-end;
 }
@@ -36,13 +36,18 @@
   font-size: 0.72rem;
   font-weight: 500;
   transition: color 0.3s ease;
-  min-width: 58px;
+  min-width: 56px;
   gap: 2px;
+  text-align: center;
 }
 
 .nav-link-custom i {
   font-size: 1.4rem;
   margin-bottom: 2px;
+}
+
+.nav-link-custom span:last-child {
+  line-height: 1.15;
 }
 
 .nav-link-profile .profile-caret {
@@ -162,5 +167,16 @@ body {
     border-radius: 8px;
     min-width: 160px;
     border: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-link-custom {
+    font-size: 0.63rem;
+    min-width: 50px;
+  }
+
+  .nav-link-custom i {
+    font-size: 1.28rem;
   }
 }
