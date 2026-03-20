@@ -11,7 +11,7 @@ const HomeCardList = () => {
         try {
             const items = await getProducts(8);
             const visibleProducts = Array.isArray(items)
-                ? items.filter(isVisibleProduct)
+                ? items.filter((item) => isVisibleProduct(item) && item?.category?.name)
                 : [];
             setProducts(visibleProducts);
             setLoading(false);

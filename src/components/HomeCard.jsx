@@ -4,7 +4,7 @@ import noImage from "../assets/no-image.webp"
 import { Link } from "react-router-dom";
 
 const HomeCard = ({ product }) => {
-    if (!product || product.active === false) return null;
+    if (!product || product.active === false || !product.category?.name) return null;
 
     const { name, price, image, category, stock, _id } = product;
 
@@ -33,8 +33,7 @@ const HomeCard = ({ product }) => {
                 <div className="card-content">
                     <h2 className="product-title" style={{ textTransform: 'capitalize' }}>{name}</h2>
                     <div className="category-tags">
-                        <span className="tag">Deportivo</span>
-                        <span className="tag">{category?.name || 'General'}</span>
+                        <span className="tag">{category.name}</span>
                     </div>
                     <hr className="divider" />
                     <div className="card-footer">
