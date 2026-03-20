@@ -43,10 +43,58 @@
 
 
    
-   .hero-section {
+.hero-section {
             background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../../assets/BORROSA.webp');
             background-size: cover;
             background-position: center;
             height: 60vh; /* Ajusta la altura a tu gusto */
             color: white;
         }
+
+@media (max-width: 767.98px) {
+    .products-carousel {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        gap: 0;
+        padding-bottom: 12px;
+        margin-left: -4px;
+        margin-right: -4px;
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .products-carousel::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    .products-carousel::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.18);
+        border-radius: 999px;
+    }
+
+    .products-carousel > * {
+        scroll-snap-align: center;
+    }
+
+    .product-card-slide {
+        flex: 0 0 86%;
+        max-width: 86%;
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-bottom: 0;
+    }
+}
+
+@media (min-width: 768px) {
+    .products-carousel {
+        display: flex;
+        flex-wrap: wrap;
+        overflow: visible;
+    }
+
+    .product-card-slide {
+        margin-bottom: 1.5rem;
+    }
+}

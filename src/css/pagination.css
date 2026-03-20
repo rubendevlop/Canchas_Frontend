@@ -33,3 +33,24 @@
     color: #dee2e6;
     background-color: transparent;
 }
+
+@media (max-width: 767.98px) {
+    .custom-pagination {
+        flex-wrap: nowrap;
+        gap: 6px;
+    }
+
+    .custom-pagination .page-item {
+        margin: 0;
+    }
+
+    .custom-pagination .page-link {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+    }
+
+    .custom-pagination .page-item:not(.active):not(:first-child):not(:last-child) {
+        display: none;
+    }
+}

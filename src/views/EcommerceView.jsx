@@ -134,7 +134,7 @@ export default function EcommerceView() {
 
           {!loading && !error && productosFiltrados.length > 0 && (
             <>
-              <div className="row g-4 mb-5">
+              <div className="row g-4 mb-5 products-carousel">
                 {productosPaginados.map((product) => (
                   <CardProduct key={product._id} product={product} />
                 ))}
