@@ -85,8 +85,8 @@
 }
 
 .my-booking-card {
-  width: 100%;
   display: block;
+  min-width: 320px;
   border-radius: 24px;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 250, 247, 0.98));
@@ -96,7 +96,6 @@
 }
 
 .my-booking-card-body {
-  width: 100%;
   padding: 24px;
   display: flex;
   flex-direction: column;
@@ -185,6 +184,10 @@
 
   .my-booking-card-body {
     padding: 20px;
+  }
+
+  .my-booking-card {
+    min-width: 0;
   }
 
   .my-booking-head {
