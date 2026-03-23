@@ -1,4 +1,5 @@
 const CONTACT_ENDPOINTS = [
+    `${import.meta.env.VITE_API_URL}/contact`,
     `${import.meta.env.VITE_API_URL}/nodemailer`
 ];
 
