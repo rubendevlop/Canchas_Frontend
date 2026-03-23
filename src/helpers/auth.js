@@ -1,4 +1,5 @@
 const url = `${import.meta.env.VITE_API_URL}/login`
+const LOGOUT_FLAG_KEY = "auth:manual_logout";
 
 const getRegisterMessage = (data, fallbackMessage) => {
   if (Array.isArray(data?.msg) && data.msg.length > 0) {
@@ -28,6 +29,11 @@ const logIn = async (email, password) => {
   });
 
   const data = await response.json();
+
+  if (response.ok && data?.ok !== false) {
+    localStorage.removeItem(LOGOUT_FLAG_KEY);
+  }
+
   return data;
 };
 
@@ -36,8 +42,11 @@ const getProfile = async () => {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      "Cache-Control": "no-cache",
+      Pragma: "no-cache",
     },
     credentials: "include",
+    cache: "no-store",
   });
 
   const data = await response.json();

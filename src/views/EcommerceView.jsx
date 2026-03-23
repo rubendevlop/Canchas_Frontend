@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react'
 import CardProduct from '../components/CardProduct'
+import ProductCardShelf from '../components/ProductCardShelf'
 import "../css/viewsCSS/EcommerceView.css"
 import Pagination from '../components/Pagination'
 import SearchBar from '../components/SearchBar'
@@ -307,11 +308,11 @@ export default function EcommerceView() {
 
           {!loading && !error && productosFiltrados.length > 0 && (
             <>
-              <div className="products-carousel mb-5">
+              <ProductCardShelf className="mb-5" mobileCarousel>
                 {productosPaginados.map((product) => (
                   <CardProduct key={product._id} product={product} />
                 ))}
-              </div>
+              </ProductCardShelf>
 
               <Pagination
                 paginaActual={paginaActual}

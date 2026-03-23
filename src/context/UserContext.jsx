@@ -2,12 +2,19 @@ import { createContext, useState, useEffect, useCallback } from "react";
 import { getProfile } from "../helpers/auth.js";
 
 const UserContext = createContext(null);
+const LOGOUT_FLAG_KEY = "auth:manual_logout";
 
 const UserProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
 
   const loadUserData = useCallback(async () => {
+    if (localStorage.getItem(LOGOUT_FLAG_KEY) === "1") {
+      setUser(null);
+      setIsLoadingUser(false);
+      return null;
+    }
+
     setIsLoadingUser(true);
     try {
       const response = await getProfile();
@@ -36,6 +43,7 @@ const UserProvider = ({ children }) => {
   }, [loadUserData]);
 
   const clearUserData = () => {
+    localStorage.setItem(LOGOUT_FLAG_KEY, "1");
     setUser(null);
     setIsLoadingUser(false);
   };

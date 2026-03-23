@@ -4,7 +4,7 @@ import { UserContext } from "../context/UserContext";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../css/addToCartButton.css";
 
-function AddToCartButton({ product }) {
+function AddToCartButton({ product, compact = false, label }) {
   const { addToCart, loadingCart } = useCartContext();
   const { user, loadUserData } = useContext(UserContext);
   const navigate = useNavigate();
@@ -26,12 +26,18 @@ function AddToCartButton({ product }) {
 
   return (
     <button
-      className="btn btn-success custom-add-btn w-100"
+      className={`btn btn-success custom-add-btn ${compact ? "custom-add-btn--compact" : "w-100"}`}
       onClick={handleAddToCart}
       disabled={!product || product.stock <= 0 || loadingCart}
     >
-      <i className="bi bi-cart-plus me-2"></i>
-      {product?.stock > 0 ? "Agregar al carrito" : "Sin stock"}
+      {compact ? (
+        product?.stock > 0 ? (label || "Agregar") : "Sin stock"
+      ) : (
+        <>
+          <i className="bi bi-cart-plus me-2"></i>
+          {product?.stock > 0 ? (label || "Agregar al carrito") : "Sin stock"}
+        </>
+      )}
     </button>
   );
 }

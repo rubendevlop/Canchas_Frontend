@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import HomeCard from './HomeCard';
+import ProductCardShelf from './ProductCardShelf';
 import { getProducts, isVisibleProduct } from '../helpers/product';
-import "../css/home-card-list.css"
 
 const HomeCardList = () => {
     const [products, setProducts] = useState([]);
@@ -28,11 +28,11 @@ const HomeCardList = () => {
     if (loading) return <p>Cargando productos...</p>;
 
     return (
-        <div className='list-card-cont'>
-        {products.map(prod => (
-            <HomeCard  key={prod._id} product={prod} />
-        ))}
-        </div>
+        <ProductCardShelf mobileCarousel>
+            {products.map(prod => (
+                <HomeCard key={prod._id} product={prod} />
+            ))}
+        </ProductCardShelf>
     );
 };
 

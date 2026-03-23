@@ -1,4 +1,12 @@
-.add-cart-btn {
-    border-radius: 25px;
-    font-weight: 600;
-  }
+.custom-add-btn {
+  border-radius: 18px !important;
+  font-weight: 700 !important;
+}
+
+.custom-add-btn--compact {
+  min-width: 108px;
+  padding: 5px 14px !important;
+  border-radius: 12px !important;
+  font-size: 1rem !important;
+  line-height: 1.1;
+}
