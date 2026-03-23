@@ -1,16 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  getAdminProducts,
-  saveProduct,
-  activateProduct,
-  deactivateProduct,
-} from "../../helpers/product";
-import {
-  getAdminCategories,
-  saveCategory,
-  activateCategory,
-  deactivateCategory,
-} from "../../helpers/category";
+import { getProducts, saveProduct, deleteProduct } from "../../helpers/product";
+import { getCategories, saveCategory, deleteCategory } from "../../helpers/category";
 import CardProduct from "../CardProduct";
 import ProductCardShelf from "../ProductCardShelf";
 
@@ -42,10 +32,7 @@ export const TiendaManager = () => {
   const cargarDatos = async () => {
     setLoading(true);
     try {
-      const [dataProd, dataCat] = await Promise.all([
-        getAdminProducts(),
-        getAdminCategories(),
-      ]);
+      const [dataProd, dataCat] = await Promise.all([getProducts(), getCategories()]);
       if (dataProd) setProductos(dataProd);
       if (dataCat.ok) setCategorias(dataCat.categories);
     } catch (error) {
@@ -114,47 +101,13 @@ export const TiendaManager = () => {
     }
   };
 
-  const cambiarEstadoProducto = async (producto) => {
-    const accion = producto.active === false ? "activar" : "desactivar";
-
-    if (!window.confirm(`Estas seguro que deseas ${accion} "${producto.name}"?`)) return;
-
+  const borrarItem = async (tipo, id, nombre) => {
+    if (!window.confirm(`Estas seguro que deseas eliminar "${nombre}"?`)) return;
     try {
-      const data =
-        producto.active === false
-          ? await activateProduct(producto._id)
-          : await deactivateProduct(producto._id);
-
-      if (data.ok) {
-        cargarDatos();
-      } else {
-        alert(data.message);
-      }
+      const data = tipo === "prod" ? await deleteProduct(id) : await deleteCategory(id);
+      if (data.ok) cargarDatos();
     } catch (error) {
-      console.error(`Error al ${accion} producto:`, error);
-      alert("Error de conexion con el servidor. Revisa la consola.");
-    }
-  };
-
-  const cambiarEstadoCategoria = async (categoria) => {
-    const accion = categoria.active === false ? "activar" : "desactivar";
-
-    if (!window.confirm(`Estas seguro que deseas ${accion} "${categoria.name}"?`)) return;
-
-    try {
-      const data =
-        categoria.active === false
-          ? await activateCategory(categoria._id)
-          : await deactivateCategory(categoria._id);
-
-      if (data.ok) {
-        cargarDatos();
-      } else {
-        alert(data.message);
-      }
-    } catch (error) {
-      console.error(`Error al ${accion} categoria:`, error);
-      alert("Error de conexion con el servidor. Revisa la consola.");
+      console.error("Error al eliminar:", error);
     }
   };
 
@@ -288,17 +241,11 @@ export const TiendaManager = () => {
                     Editar
                   </button>
                   <button
-                    onClick={() => cambiarEstadoProducto(producto)}
-                    className={`btn btn-sm d-flex align-items-center justify-content-center gap-1 product-card-action-btn ${
-                      producto.active === false ? "btn-outline-success" : "btn-outline-danger"
-                    }`}
+                    onClick={() => borrarItem("prod", producto._id, producto.name)}
+                    className="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center gap-1 product-card-action-btn"
                   >
-                    <i
-                      className={`bi ${
-                        producto.active === false ? "bi-arrow-clockwise" : "bi-pause-circle"
-                      }`}
-                    ></i>
-                    {producto.active === false ? "Activar" : "Desactivar"}
+                    <i className="bi bi-trash3"></i>
+                    Borrar
                   </button>
                 </div>
               }
@@ -311,35 +258,17 @@ export const TiendaManager = () => {
             <thead className="bg-light">
               <tr>
                 <th className="px-4 py-3">Nombre de Categoria</th>
-                <th className="px-4 py-3">Estado</th>
                 <th className="text-end px-4">Acciones</th>
               </tr>
             </thead>
             <tbody>
               {categorias.map((categoria) => (
-                <tr
-                  key={categoria._id}
-                  style={{
-                    height: "70px",
-                    opacity: categoria.active === false ? 0.7 : 1,
-                  }}
-                >
+                <tr key={categoria._id} style={{ height: "70px" }}>
                   <td
                     className="px-4 fw-bold text-capitalize"
                     style={{ color: "var(--color-title)" }}
                   >
                     {categoria.name}
-                  </td>
-                  <td className="px-4">
-                    {categoria.active === false ? (
-                      <span className="badge bg-danger-subtle text-danger border border-danger-subtle px-3 py-2 rounded-pill">
-                        Inactiva
-                      </span>
-                    ) : (
-                      <span className="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">
-                        Activa
-                      </span>
-                    )}
                   </td>
                   <td className="text-end px-4">
                     <div className="d-flex justify-content-end gap-2 flex-nowrap">
@@ -360,17 +289,11 @@ export const TiendaManager = () => {
                         Editar
                       </button>
                       <button
-                        onClick={() => cambiarEstadoCategoria(categoria)}
-                        className={`btn btn-sm d-flex align-items-center gap-2 px-3 fw-medium ${
-                          categoria.active === false ? "btn-outline-success" : "btn-outline-danger"
-                        }`}
+                        onClick={() => borrarItem("cat", categoria._id, categoria.name)}
+                        className="btn btn-sm btn-outline-danger d-flex align-items-center gap-2 px-3 fw-medium"
                       >
-                        <i
-                          className={`bi ${
-                            categoria.active === false ? "bi-arrow-clockwise" : "bi-pause-circle"
-                          }`}
-                        ></i>
-                        {categoria.active === false ? "Activar" : "Desactivar"}
+                        <i className="bi bi-trash3"></i>
+                        Borrar
                       </button>
                     </div>
                   </td>
@@ -455,15 +378,8 @@ export const TiendaManager = () => {
                 >
                   <option value="">Seleccione una categoria...</option>
                   {categorias.map((categoria) => (
-                    <option
-                      key={categoria._id}
-                      value={categoria._id}
-                      disabled={
-                        categoria.active === false && formProd.category !== categoria._id
-                      }
-                    >
+                    <option key={categoria._id} value={categoria._id}>
                       {categoria.name}
-                      {categoria.active === false ? " (inactiva)" : ""}
                     </option>
                   ))}
                 </select>

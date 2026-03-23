@@ -7,7 +7,7 @@ export const isVisibleProduct = (product) =>
 export const getProducts = async (limit = ALL_PRODUCTS_LIMIT) => {
   const resolvedLimit = Number.isFinite(limit) ? limit : ALL_PRODUCTS_LIMIT;
   const url = `${API_URL}/products?limit=${resolvedLimit}`;
-  const response = await fetch(url, { credentials: "include" });
+  const response = await fetch(url, { credentials: 'include' });
   const data = await response.json();
 
   if (!response.ok) {
@@ -15,19 +15,6 @@ export const getProducts = async (limit = ALL_PRODUCTS_LIMIT) => {
   }
 
   return data.items || data.products || data.data || [];
-};
-
-export const getAdminProducts = async () => {
-  const response = await fetch(`${API_URL}/products/admin`, {
-    credentials: "include",
-  });
-  const data = await response.json();
-
-  if (!response.ok) {
-    throw new Error(data.message || "No se pudieron cargar los productos");
-  }
-
-  return data.items || [];
 };
 
 export const getProductById = async (id) => {
@@ -43,25 +30,12 @@ export const getProductById = async (id) => {
 
 export const saveProduct = async (id, data) => {
   const url = id ? `${API_URL}/products/${id}` : `${API_URL}/products`;
-  const method = id ? "PATCH" : "POST";
-  const response = await fetch(url, { method, body: data, credentials: "include" });
+  const method = id ? 'PATCH' : 'POST';
+  const response = await fetch(url, { method, body: data, credentials: 'include' });
   return await response.json();
 };
 
-export const activateProduct = async (id) => {
-  const response = await fetch(`${API_URL}/products/${id}/activate`, {
-    method: "PATCH",
-    credentials: "include",
-  });
+export const deleteProduct = async (id) => {
+  const response = await fetch(`${API_URL}/products/${id}`, { method: 'DELETE', credentials: 'include' });
   return await response.json();
 };
-
-export const deactivateProduct = async (id) => {
-  const response = await fetch(`${API_URL}/products/${id}`, {
-    method: "DELETE",
-    credentials: "include",
-  });
-  return await response.json();
-};
-
-export const deleteProduct = deactivateProduct;
