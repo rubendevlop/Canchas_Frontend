@@ -1,7 +1,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { UserContext } from "../context/UserContext";
 import { getField } from "../helpers/field";
-import { formatBookingDateValue, getBookingsByDate } from "../helpers/booking";
+import { cancelBooking, formatBookingDateValue, getBookingsByDate } from "../helpers/booking";
 import { generateDays } from "../helpers/date";
 import "../css/my-bookings.css";
 
@@ -10,46 +10,47 @@ const MyBookingsView = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [cancellingId, setCancellingId] = useState("");
 
   const datesToLoad = useMemo(() => generateDays(10), []);
 
+  const loadBookings = async (currentUser = user) => {
+    if (!currentUser?._id) {
+      setBookings([]);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+
+    try {
+      const fieldsData = await getField();
+      const availableFields = Array.isArray(fieldsData) ? fieldsData : [];
+
+      const bookingsByDate = await Promise.all(
+        datesToLoad.map((date) => getBookingsByDate(date, availableFields))
+      );
+
+      const userBookings = bookingsByDate
+        .flat()
+        .filter((booking) => String(booking.userId) === String(currentUser._id))
+        .sort((a, b) => {
+          const dateDiff = new Date(a.date) - new Date(b.date);
+          if (dateDiff !== 0) return dateDiff;
+          return a.hour - b.hour;
+        });
+
+      setBookings(userBookings);
+    } catch (loadError) {
+      console.error("Error cargando mis reservas:", loadError);
+      setError("No se pudieron cargar tus reservas.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const loadBookings = async () => {
-      if (!user?._id) {
-        setBookings([]);
-        setLoading(false);
-        return;
-      }
-
-      setLoading(true);
-      setError("");
-
-      try {
-        const fieldsData = await getField();
-        const availableFields = Array.isArray(fieldsData) ? fieldsData : [];
-
-        const bookingsByDate = await Promise.all(
-          datesToLoad.map((date) => getBookingsByDate(date, availableFields))
-        );
-
-        const userBookings = bookingsByDate
-          .flat()
-          .filter((booking) => booking.userId === user._id)
-          .sort((a, b) => {
-            const dateDiff = new Date(a.date) - new Date(b.date);
-            if (dateDiff !== 0) return dateDiff;
-            return a.hour - b.hour;
-          });
-
-        setBookings(userBookings);
-      } catch (loadError) {
-        console.error("Error cargando mis reservas:", loadError);
-        setError("No se pudieron cargar tus reservas.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadBookings();
   }, [datesToLoad, user]);
 
@@ -59,6 +60,42 @@ const MyBookingsView = () => {
       day: "2-digit",
       month: "2-digit",
     });
+
+  const handleCancelBooking = async (booking) => {
+    if (!booking?.fieldId || !booking?.date || !booking?.userId) {
+      alert("No se encontraron los datos necesarios para cancelar esta reserva.");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Vas a cancelar tu reserva de ${booking.fieldName} a las ${booking.hour}:00 hs.`
+    );
+
+    if (!confirmed) return;
+
+    setCancellingId(booking.id);
+
+    try {
+      const response = await cancelBooking(
+        booking.fieldId,
+        booking.date,
+        booking.hour,
+        booking.userId
+      );
+
+      if (!response?.ok) {
+        throw new Error(response?.message || response?.msg || "No se pudo cancelar la reserva");
+      }
+
+      await loadBookings(user);
+      alert("Reserva cancelada correctamente");
+    } catch (cancelError) {
+      console.error("Error cancelando reserva:", cancelError);
+      alert(cancelError.message || "No se pudo cancelar la reserva");
+    } finally {
+      setCancellingId("");
+    }
+  };
 
   return (
     <main className="my-bookings-page">
@@ -135,6 +172,17 @@ const MyBookingsView = () => {
                       {booking.price
                         ? `Precio registrado: $${booking.price}`
                         : "Precio no disponible"}
+                    </div>
+
+                    <div className="my-booking-actions">
+                      <button
+                        type="button"
+                        className="btn btn-outline-danger fw-semibold"
+                        onClick={() => handleCancelBooking(booking)}
+                        disabled={cancellingId === booking.id}
+                      >
+                        {cancellingId === booking.id ? "Cancelando..." : "Cancelar reserva"}
+                      </button>
                     </div>
                   </div>
                 </article>

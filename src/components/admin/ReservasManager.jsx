@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { getField } from "../../helpers/field";
-import { getBookingsByDate } from "../../helpers/booking";
+import { cancelBooking, getBookingsByDate } from "../../helpers/booking";
 import { generateDays } from "../../helpers/date";
 
 export const ReservasManager = () => {
@@ -9,25 +9,26 @@ export const ReservasManager = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [cancellingId, setCancellingId] = useState("");
+
+  const loadBookings = async (dateToLoad = selectedDate) => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const fields = await getField();
+      const availableFields = Array.isArray(fields) ? fields : [];
+      const bookingsData = await getBookingsByDate(dateToLoad, availableFields);
+      setBookings(bookingsData);
+    } catch (loadError) {
+      console.error("Error cargando reservas:", loadError);
+      setError("No se pudieron cargar las reservas.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const loadBookings = async () => {
-      setLoading(true);
-      setError("");
-
-      try {
-        const fields = await getField();
-        const availableFields = Array.isArray(fields) ? fields : [];
-        const bookingsData = await getBookingsByDate(selectedDate, availableFields);
-        setBookings(bookingsData);
-      } catch (loadError) {
-        console.error("Error cargando reservas:", loadError);
-        setError("No se pudieron cargar las reservas.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     loadBookings();
   }, [selectedDate]);
 
@@ -37,6 +38,42 @@ export const ReservasManager = () => {
       day: "2-digit",
       month: "2-digit",
     });
+
+  const handleCancelBooking = async (booking) => {
+    if (!booking?.fieldId || !booking?.date || !booking?.userId) {
+      alert("No se encontraron los datos necesarios para cancelar esta reserva.");
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `Vas a cancelar la reserva de ${booking.fieldName} a las ${booking.hour}:00 hs.`
+    );
+
+    if (!confirmed) return;
+
+    setCancellingId(booking.id);
+
+    try {
+      const response = await cancelBooking(
+        booking.fieldId,
+        booking.date,
+        booking.hour,
+        booking.userId
+      );
+
+      if (!response?.ok) {
+        throw new Error(response?.message || response?.msg || "No se pudo cancelar la reserva");
+      }
+
+      await loadBookings(selectedDate);
+      alert("Reserva cancelada correctamente");
+    } catch (cancelError) {
+      console.error("Error cancelando reserva:", cancelError);
+      alert(cancelError.message || "No se pudo cancelar la reserva");
+    } finally {
+      setCancellingId("");
+    }
+  };
 
   return (
     <section>
@@ -126,6 +163,15 @@ export const ReservasManager = () => {
                   <div className="small text-muted">
                     Usuario: {booking.userId || "Sin asignar"}
                   </div>
+
+                  <button
+                    type="button"
+                    className="btn btn-outline-danger btn-sm mt-3 fw-semibold"
+                    onClick={() => handleCancelBooking(booking)}
+                    disabled={cancellingId === booking.id}
+                  >
+                    {cancellingId === booking.id ? "Cancelando..." : "Cancelar reserva"}
+                  </button>
                 </div>
               </article>
             </div>

@@ -168,6 +168,12 @@
   margin-top: auto;
 }
 
+.my-booking-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 18px;
+}
+
 @media (max-width: 767.98px) {
   .my-bookings-page {
     padding-top: 20px;
@@ -192,5 +198,13 @@
 
   .my-booking-head {
     gap: 12px;
+  }
+
+  .my-booking-actions {
+    justify-content: stretch;
+  }
+
+  .my-booking-actions .btn {
+    width: 100%;
   }
 }
