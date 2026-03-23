@@ -1,7 +1,5 @@
 const CONTACT_ENDPOINTS = [
-    `${import.meta.env.VITE_API_URL}/nodemailer`,
-    "/api/nodemailer",
-    "https://canchasbackend.vercel.app/api/nodemailer",
+    `${import.meta.env.VITE_API_URL}/nodemailer`
 ];
 
 const getUniqueEndpoints = () => {
