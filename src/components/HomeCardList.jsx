@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import HomeCard from './HomeCard';
-import "../css/home-card-list.css"
+import ProductCardShelf from './ProductCardShelf';
+import { getProducts, isVisibleProduct } from '../helpers/product';
 
 const HomeCardList = () => {
     const [products, setProducts] = useState([]);
@@ -8,9 +9,11 @@ const HomeCardList = () => {
 
     const fetchProducts = async () => {
         try {
-            const response = await fetch(`${import.meta.env.VITE_API_URL}/products?limit=8`);
-            const data = await response.json();
-            setProducts(data.items);
+            const items = await getProducts(5);
+            const visibleProducts = Array.isArray(items)
+                ? items.filter((item) => isVisibleProduct(item) && item?.category?.name)
+                : [];
+            setProducts(visibleProducts);
             setLoading(false);
         } catch (error) {
             console.error("Error cargando productos:", error);
@@ -25,11 +28,11 @@ const HomeCardList = () => {
     if (loading) return <p>Cargando productos...</p>;
 
     return (
-        <div className='list-card-cont'>
-        {products.map(prod => (
-            <HomeCard  key={prod._id} product={prod} />
-        ))}
-        </div>
+        <ProductCardShelf mobileCarousel>
+            {products.map(prod => (
+                <HomeCard key={prod._id} product={prod} />
+            ))}
+        </ProductCardShelf>
     );
 };
 

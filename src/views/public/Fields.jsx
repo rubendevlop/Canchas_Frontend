@@ -8,15 +8,19 @@ import "../../css/fields.css"
 const Fields = () => {
   return (
     <div>
-
       <HeroField />
       <section className="section-fields">
-        <h2 className="text-center py-3 title">Nuestras canchas</h2>
+        <div className="fields-heading container">
+          <span className="fields-kicker">Reservas simples</span>
+          <h2 className="title">Nuestras canchas</h2>
+          <p className="fields-subtitle">
+            Elegí la cancha ideal, revisá el precio por hora y reservá en pocos pasos.
+          </p>
+        </div>
         <ListCardField />
       </section>
-
     </div>
-  )
-}
+  );
+};
 
-export default Fields
+export default Fields;

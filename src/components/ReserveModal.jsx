@@ -2,11 +2,15 @@ import "../css/modal.css";
 import close from "../assets/close.png";
 import { getBooking, reserveBooking } from "../helpers/booking";
 import { generateDays } from "../helpers/date";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 const ReserveModal = ({ court, closeModal }) => {
   if (!court) return null;
 
+  const { user, loadUserData, isLoadingUser } = useContext(UserContext);
+  const navigate = useNavigate();
   const [selectedDate, setSelectedDate] = useState(null);
   const [availableHours, setAvailableHours] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -24,11 +28,7 @@ const ReserveModal = ({ court, closeModal }) => {
       const normalizedDate = new Date(date);
       normalizedDate.setHours(0, 0, 0, 0);
 
-      const booking = await getBooking(
-        normalizedDate.toISOString(),
-        court._id
-      );
-
+      const booking = await getBooking(normalizedDate.toISOString(), court._id);
       const allHours = [18, 19, 20, 21, 22, 23];
 
       const freeHours = allHours.filter((hour) => {
@@ -53,11 +53,12 @@ const ReserveModal = ({ court, closeModal }) => {
       return;
     }
 
-    const user = JSON.parse(localStorage.getItem("user"));
-    const userId = user?._id || "69b72e714a9f29aa7602d50f";
+    const currentUser = user?._id ? user : await loadUserData();
 
-    if (!userId) {
+    if (!currentUser?._id) {
       alert("Debes iniciar sesión para reservar");
+      closeModal();
+      navigate("/login", { state: { from: { pathname: "/fields" } } });
       return;
     }
 
@@ -71,18 +72,20 @@ const ReserveModal = ({ court, closeModal }) => {
         court._id,
         normalizedDate.toISOString(),
         selectedHour,
-        userId
+        currentUser._id
       );
 
-      console.log("RESERVA:", response);
-
       if (!response?.ok) {
-        throw new Error(response?.message || response?.msg || "No se pudo realizar la reserva");
+        throw new Error(
+          response?.message || response?.msg || "No se pudo realizar la reserva"
+        );
       }
 
       alert("Reserva realizada correctamente");
+      setSelectedDate(null);
       setSelectedHour(null);
-      await handleSelectDate(selectedDate);
+      setAvailableHours([]);
+      closeModal();
     } catch (error) {
       console.log("Error al reservar:", error);
       alert(error.message || "No se pudo realizar la reserva");
@@ -154,14 +157,20 @@ const ReserveModal = ({ court, closeModal }) => {
 
         <div className="reserve-footer">
           <span>${court.pricePerHour}</span>
-          <button
-            type="button"
-            className="btn-reserve"
-            onClick={handleReserve}
-            disabled={!selectedDate || !selectedHour || reserving}
-          >
-            {reserving ? "Reservando..." : "Confirmar"}
-          </button>
+          {user ? (
+            <button
+              type="button"
+              className="btn-reserve"
+              onClick={handleReserve}
+              disabled={!selectedDate || !selectedHour || reserving || isLoadingUser}
+            >
+              {reserving ? "Reservando..." : "Confirmar"}
+            </button>
+          ) : (
+            <div className="text-danger small fw-bold">
+              Inicia sesión para reservar
+            </div>
+          )}
         </div>
       </div>
     </div>

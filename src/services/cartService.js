@@ -1,9 +1,14 @@
 const API_URL = `${import.meta.env.VITE_API_URL}/cart`;
 
 export const getCartRequest = async () => {
-  const response = await fetch(API_URL, {
+  const response = await fetch(`${API_URL}?t=${new Date().getTime()}`, {
     method: "GET",
     credentials: "include",
+    headers: {
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Pragma": "no-cache",
+      "Expires": "0"
+    }
   });
 
   const data = await response.json();

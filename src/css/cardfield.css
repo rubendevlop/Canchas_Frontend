@@ -1,13 +1,30 @@
 .court-card {
-  border-radius: 14px;
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
+  border-radius: 24px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 250, 247, 0.98));
+  border: 1px solid rgba(18, 42, 26, 0.08);
+  overflow: hidden;
+  box-shadow: 0 18px 42px rgba(14, 35, 22, 0.08);
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+
+.court-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 54px rgba(14, 35, 22, 0.12);
+}
+
+.court-image-shell {
   overflow: hidden;
 }
 
 .card-img-top {
-  height: 180px;
+  height: 220px;
   object-fit: cover;
+  transition: transform 0.35s ease;
+}
+
+.court-card:hover .card-img-top {
+  transform: scale(1.04);
 }
 
 /* badge disponible */
@@ -16,13 +33,12 @@
   position: absolute;
   top: 15px;
   left: 15px;
-
-  background: var(--color-navbar);
+  background: rgba(245, 250, 245, 0.94);
   color: var(--color-title);
-
   font-weight: var(--font-weight-secondary);
   padding: 6px 12px;
   border-radius: 20px;
+  backdrop-filter: blur(8px);
 }
 
 /* titulo */
@@ -30,25 +46,58 @@
 .court-title {
   color: var(--color-title);
   font-weight: var(--font-weight-title);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
+  font-size: 1.4rem;
+}
+
+.court-card-body {
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* tags */
 
 .badge-tag {
-  background: var(--color-navbar);
-  color: var(--color-title);
+  background: rgba(214, 236, 220, 0.65);
+  color: #264834;
   border-radius: 20px;
-  padding: 5px 10px;
-  font-size: 13px;
+  padding: 6px 12px;
+  font-size: 0.78rem;
+  border: 1px solid rgba(38, 72, 52, 0.08);
 }
 
-/* precio */
+.court-copy {
+  color: var(--color-text-secondary);
+  line-height: 1.65;
+  margin: 0 0 20px;
+  min-height: 58px;
+  font-size: 0.98rem;
+}
+
+.court-footer {
+  background: rgba(241, 246, 242, 0.96);
+  border: 1px solid rgba(18, 42, 26, 0.06);
+  border-radius: 18px;
+  padding: 14px 16px;
+  gap: 12px;
+  margin-top: auto;
+}
 
 .price {
   color: var(--color-title);
   font-weight: var(--font-weight-title);
   margin: 0;
+  font-size: 1.7rem;
+}
+
+.price-wrap {
+  min-width: 0;
+}
+
+.price-note {
+  color: var(--color-text-secondary);
+  font-size: 0.82rem;
 }
 
 /* boton */
@@ -56,8 +105,38 @@
 .btn-reserve {
   background: var(--color-primary);
   color: white;
-  border-radius: 10px;
-  padding: 6px 18px;
+  border-radius: 14px;
+  padding: 10px 18px;
   border: none;
+  font-weight: 700;
+  box-shadow: 0 12px 24px rgba(27, 128, 61, 0.22);
+  min-width: 118px;
+}
+
+.btn-reserve:disabled {
+  opacity: 0.65;
+  box-shadow: none;
+}
+
+@media (max-width: 767.98px) {
+  .card-img-top {
+    height: 205px;
+  }
+
+  .court-card-body {
+    padding: 18px;
+  }
+
+  .court-title {
+    font-size: 1.25rem;
+  }
+
+  .court-footer {
+    padding: 12px 14px;
+  }
+
+  .price {
+    font-size: 1.5rem;
+  }
 }
 

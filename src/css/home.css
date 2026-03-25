@@ -36,11 +36,22 @@
     background-color: #000;
 }
 
+.zoom-container::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+        linear-gradient(180deg, rgba(4, 12, 8, 0.6) 0%, rgba(4, 12, 8, 0.2) 35%, rgba(4, 12, 8, 0.58) 100%),
+        linear-gradient(90deg, rgba(4, 12, 8, 0.5) 0%, rgba(4, 12, 8, 0.12) 55%, rgba(4, 12, 8, 0.28) 100%);
+    z-index: 1;
+    pointer-events: none;
+}
+
 .zoom-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0.7;
+    opacity: 0.84;
     animation: zoomEntrada 3.5s ease-out forwards;
 }
 
@@ -55,16 +66,18 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    color: white;
+    color: #ffffff;
     z-index: 10;
     animation: fadeIn 1.5s ease-out;
+    text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
 }
 
 .main-text .home-title {
     font-size: 30px;
     margin: 0;
     line-height: 1.1;
-    font-weight: 600;
+    font-weight: 700;
+    color: #ffffff;
 }
 
 .main-text .subtitle {
@@ -92,12 +105,13 @@
 }
 
 .glass-card {
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
+    background: rgba(15, 29, 20, 0.42);
+    backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: 15px;
     padding: 10px;
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
 }
 
 .info-grid {
@@ -111,12 +125,15 @@
 .glass-card h3 {
     margin: 0;
     font-size: 15px;
+    color: #ffffff;
+    font-weight: 700;
 }
 
 .glass-card p {
     margin: 5px 0 0;
     font-size: 14px;
-    opacity: 0.8;
+    opacity: 1;
+    color: rgba(255, 255, 255, 0.88);
 }
 
 .booking-card {
@@ -124,7 +141,7 @@
 }
 
 .booking-card p {
-    color: #4ade80;
+    color: #70f0a0;
     font-weight: bold;
 }
 

@@ -1,17 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react';
+import { getUsers, activateUser, suspendUser } from '../../helpers/user';
+import { UserContext } from '../../context/UserContext';
 
 export const UsuariosManager = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { user } = useContext(UserContext);
 
 
   const obtenerUsuarios = async () => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_API_URL}/users`, {
-        credentials: 'include'
-      });
-
-      const data = await response.json();
+      const data = await getUsers();
 
       if (data.ok) {
         setUsuarios(data.users);
@@ -34,17 +33,8 @@ export const UsuariosManager = () => {
 
     if (!confirmar) return;
 
-    const endpoint = isActive ? 'suspend' : 'activate';
-    const url = `${import.meta.env.VITE_API_URL}/users/${id}/${endpoint}`;
-
     try {
-      const response = await fetch(url, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include'
-      });
-
-      const data = await response.json();
+      const data = isActive ? await suspendUser(id) : await activateUser(id);
 
       if (data.ok) {
         obtenerUsuarios();
@@ -54,6 +44,20 @@ export const UsuariosManager = () => {
     } catch (error) {
       console.error(`Error al ${accion}:`, error);
     }
+  };
+
+  const canManageUser = (targetUser) => {
+    const targetRole = targetUser?.role;
+
+    if (targetRole === 'superadmin') {
+      return false;
+    }
+
+    if (user?.role === 'admin' && targetRole === 'admin') {
+      return false;
+    }
+
+    return true;
   };
 
   return (
@@ -126,7 +130,15 @@ export const UsuariosManager = () => {
 
 
                 <div className="d-flex justify-content-end">
-                  {usuario.active !== false ? (
+                  {!canManageUser(usuario) ? (
+                    <button
+                      className="btn btn-sm btn-outline-secondary fw-medium px-3 d-flex align-items-center gap-2"
+                      disabled
+                      title="No puedes modificar la cuenta de otro administrador"
+                    >
+                      <i className="bi bi-shield-lock"></i> Protegido
+                    </button>
+                  ) : usuario.active !== false ? (
                     <button
                       onClick={() => cambiarEstado(usuario._id, true, usuario.username)}
                       className="btn btn-sm btn-outline-danger fw-medium px-3 d-flex align-items-center gap-2"

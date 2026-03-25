@@ -1,12 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { useCart } from "../hooks/useCart";
 import { createCartPaymentRequest } from "../services/paymentService";
+import { formatPrice } from "../helpers/formatPrice";
+import { getProducts, isVisibleProduct } from "../helpers/product";
+import CardProduct from "../components/CardProduct";
+import ProductCardShelf from "../components/ProductCardShelf";
 import "../css/cartView.css";
 
 const API_URL = `${import.meta.env.VITE_API_URL}`;
 
 const CartView = () => {
-  const { items = [], clearCart, loadingCart } = useCart();
+  const { items = [], clearCart, loadingCart, loadCart } = useCart();
 
   const [cartItems, setCartItems] = useState([]);
   const [loadingAction, setLoadingAction] = useState(false);
@@ -19,40 +23,18 @@ const CartView = () => {
     setCartItems(items);
   }, [items]);
 
-  const fetchCart = async () => {
-    try {
-      const response = await fetch(`${API_URL}/cart`, {
-        credentials: "include",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "No se pudo obtener el carrito");
-      }
-
-      setCartItems(data?.cart?.items || []);
-    } catch (error) {
-      console.error("Error refrescando carrito:", error);
-    }
-  };
-
   useEffect(() => {
     const fetchRecommendedProducts = async () => {
       try {
         setLoadingRecommendations(true);
         setRecommendationError("");
 
-        const response = await fetch(`${API_URL}/products`);
-        const data = await response.json();
-
-        if (!response.ok) {
-          throw new Error(data.message || "No se pudieron cargar los productos");
-        }
-
-        const products = data.items || data.products || data || [];
+        const products = await getProducts();
+        
         setRecommendedProducts(
-          Array.isArray(products) ? products.slice(0, 6) : []
+          Array.isArray(products)
+            ? products.filter(isVisibleProduct).slice(0, 6)
+            : []
         );
       } catch (error) {
         console.error("Error en recomendados:", error);
@@ -80,13 +62,7 @@ const CartView = () => {
     return cartItems.reduce((acc, item) => acc + (Number(item?.quantity) || 0), 0);
   }, [cartItems]);
 
-  const formatPrice = (value) => {
-    return new Intl.NumberFormat("es-AR", {
-      style: "currency",
-      currency: "ARS",
-      maximumFractionDigits: 0,
-    }).format(Number(value) || 0);
-  };
+
 
   const handleCheckout = async () => {
     try {
@@ -134,6 +110,7 @@ const CartView = () => {
       }
 
       setCartItems(data?.cart?.items || []);
+      await loadCart();
     } catch (error) {
       console.error("Error aumentando cantidad:", error);
       alert(error.message || "No se pudo aumentar la cantidad");
@@ -167,6 +144,7 @@ const CartView = () => {
       }
 
       setCartItems(data?.cart?.items || []);
+      await loadCart();
     } catch (error) {
       console.error("Error disminuyendo cantidad:", error);
       alert(error.message || "No se pudo disminuir la cantidad");
@@ -191,6 +169,7 @@ const CartView = () => {
       }
 
       setCartItems(data?.cart?.items || []);
+      await loadCart();
     } catch (error) {
       console.error("Error eliminando producto:", error);
       alert(error.message || "No se pudo eliminar el producto");
@@ -203,7 +182,6 @@ const CartView = () => {
     try {
       setLoadingAction(true);
       await clearCart();
-      await fetchCart();
     } catch (error) {
       console.error("Error vaciando carrito:", error);
       alert("No se pudo vaciar el carrito");
@@ -394,43 +372,14 @@ const CartView = () => {
                     </p>
                   </div>
                 ) : (
-                  <div className="row g-3">
-                    {recommendedProducts.map((product, index) => {
-                      const image = product.image || product.images?.[0] || "";
-                      const name = product.name || "Producto";
-                      const price = Number(product.price) || 0;
-
-                      return (
-                        <div
-                          className="col-12 col-sm-6 col-lg-4"
-                          key={product._id || index}
-                        >
-                          <div className="card h-100 border rounded-4 shadow-sm">
-                            <div className="cart-reco-image-wrap">
-                              {image ? (
-                                <img
-                                  src={image}
-                                  alt={name}
-                                  className="cart-reco-image img-fluid"
-                                />
-                              ) : (
-                                <div className="cart-reco-placeholder">
-                                  Sin imagen
-                                </div>
-                              )}
-                            </div>
-
-                            <div className="card-body">
-                              <h3 className="h6 fw-bold mb-2">{name}</h3>
-                              <p className="fw-bold fs-5 mb-0">
-                                {formatPrice(price)}
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
+                  <ProductCardShelf className="cart-recommendations-grid" mobileCarousel>
+                    {recommendedProducts.map((product, index) => (
+                      <CardProduct
+                        key={product._id || index}
+                        product={product}
+                      />
+                    ))}
+                  </ProductCardShelf>
                 )}
               </div>
             </div>

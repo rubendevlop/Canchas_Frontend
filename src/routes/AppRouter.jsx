@@ -11,6 +11,7 @@ import CartView from '../views/CartView';
 import EcommerceView from '../views/EcommerceView';
 import PagesLayout from '../layout/PagesLayout';
 import ProductDetailView from "../views/ProductDetailView";
+import MyBookingsView from '../views/MyBookingsView';
 
 import { ProtectedRoute } from './ProtectedRoute';
 import Fields from "../views/public/Fields"
@@ -32,6 +33,7 @@ export const AppRouter = () => {
   
   <Route element={<ProtectedRoute adminOnly={false} />}>
     <Route path="/cart" element={<CartView />} />
+    <Route path="/my-bookings" element={<MyBookingsView />} />
   </Route>
 
   

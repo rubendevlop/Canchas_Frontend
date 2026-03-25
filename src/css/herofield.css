@@ -3,7 +3,7 @@
 ========================= */
 
 .hero-field {
-  min-height: 80vh;
+  min-height: 84vh;
   position: relative;
   overflow: hidden;
   display: flex;
@@ -28,9 +28,11 @@
 .hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom,
-      rgba(0, 0, 0, 0.37),
-      rgba(0, 0, 0, 0));
+  background:
+    linear-gradient(to bottom,
+      rgba(5, 12, 8, 0.72),
+      rgba(8, 22, 14, 0.36) 44%,
+      rgba(6, 18, 11, 0.58) 100%);
   z-index: 1;
 }
 
@@ -49,23 +51,33 @@
 
 .hero-title {
   font-weight: var(--font-weight-title);
-  margin-top: 3rem;
-  line-height: 1.2;
-  max-width: 650px;
+  margin-top: 2.25rem;
+  line-height: 1.08;
+  max-width: 720px;
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  color: #ffffff;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.45);
 }
 
 
 /* descripción */
 
 .hero-description {
-  opacity: .9;
-  margin-top: 12px;
-  max-width: 520px;
-  font-size: .95rem;
+  opacity: 1;
+  margin-top: 18px;
+  max-width: 560px;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
 }
 
 .hero-badge {
-  background-color: var(--color-navbar);
+  background-color: rgba(245, 250, 245, 0.92);
+  color: #0d5c2c !important;
+  font-weight: 700;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.16);
+  border-color: rgba(26, 132, 61, 0.2) !important;
 }
 
 
@@ -75,22 +87,26 @@
 ========================= */
 
 .stat-card {
-  background: rgba(255, 255, 255, .08);
-  backdrop-filter: blur(10px);
-  border-radius: 10px;
-  padding: 12px;
-  border: 1px solid rgba(255, 255, 255, .15);
+  background: linear-gradient(180deg, rgba(22, 40, 28, 0.58), rgba(12, 23, 17, 0.5));
+  backdrop-filter: blur(14px);
+  border-radius: 20px;
+  padding: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 18px 38px rgba(0, 0, 0, 0.22);
 }
 
 .stat-card h3 {
   margin: 0;
   font-size: 1.2rem;
+  color: #ffffff;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
 }
 
 .stat-card p {
-  margin: 0;
-  font-size: .75rem;
-  opacity: .85;
+  margin: 4px 0 0;
+  font-size: .82rem;
+  opacity: 1;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 
@@ -128,20 +144,20 @@
 
 @media (min-width:768px) {
   .hero-field .container {
-    margin-top: 50px;
+    margin-top: 42px;
   }
 
   .hero-title {
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   .hero-description {
-    font-size: 1rem;
+    font-size: 1.05rem;
   }
 
   .stat-card {
-    padding: 16px;
-    border-radius: 12px;
+    padding: 18px;
+    border-radius: 22px;
   }
 
   .stat-card h3 {
@@ -161,7 +177,7 @@
 
 @media (min-width:992px) {
   .hero-field .container {
-    margin-top: 30px;
+    margin-top: 10px;
   }
 
   .hero-title {
@@ -169,8 +185,8 @@
   }
 
   .stat-card {
-    padding: 18px;
-    border-radius: 14px;
+    padding: 20px;
+    border-radius: 24px;
   }
 
   .stat-card h3 {
@@ -181,4 +197,21 @@
     font-size: .9rem;
   }
 
+}
+
+@media (max-width: 767.98px) {
+  .hero-field {
+    min-height: 78vh;
+  }
+
+  .hero-title {
+    margin-top: 1rem;
+    max-width: 100%;
+  }
+
+  .hero-description {
+    max-width: 100%;
+    font-size: 0.96rem;
+    line-height: 1.7;
+  }
 }
