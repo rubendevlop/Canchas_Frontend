@@ -81,18 +81,26 @@ export const TiendaManager = () => {
     const backendErrors = res?.errors;
     let hasMappedErrors = false;
 
-    if (backendErrors && typeof backendErrors === "object") {
-      Object.entries(backendErrors).forEach(([field, issue]) => {
-        const targetField = fieldMap[field];
-        const message =
-          issue?.msg ||
-          issue?.message ||
-          (Array.isArray(issue) ? issue[0]?.msg || issue[0]?.message : null);
+    const registerMappedError = (rawField, issue) => {
+      const fieldName = rawField || issue?.path || issue?.param || issue?.field;
+      const targetField = fieldMap[fieldName];
+      const message = issue?.msg || issue?.message || issue;
 
-        if (targetField && message) {
-          hasMappedErrors = true;
-          setError(targetField, { type: "server", message });
+      if (targetField && typeof message === "string" && message.trim()) {
+        hasMappedErrors = true;
+        setError(targetField, { type: "server", message });
+      }
+    };
+
+    if (Array.isArray(backendErrors)) {
+      backendErrors.forEach((issue) => registerMappedError(undefined, issue));
+    } else if (backendErrors && typeof backendErrors === "object") {
+      Object.entries(backendErrors).forEach(([field, issue]) => {
+        if (Array.isArray(issue)) {
+          issue.forEach((item) => registerMappedError(field, item));
+          return;
         }
+        registerMappedError(field, issue);
       });
     }
 
@@ -416,6 +424,8 @@ export const TiendaManager = () => {
                   {...register("price", {
                     required: "El precio es obligatorio.",
                     valueAsNumber: true,
+                    validate: (value) =>
+                      Number.isFinite(value) || "Ingresa un precio válido.",
                     min: {
                       value: 0,
                       message: "El precio no puede ser menor a 0.",
@@ -432,6 +442,8 @@ export const TiendaManager = () => {
                   {...register("stock", {
                     required: "El stock inicial es obligatorio.",
                     valueAsNumber: true,
+                    validate: (value) =>
+                      Number.isFinite(value) || "Ingresa un stock válido.",
                     min: {
                       value: 0,
                       message: "El stock no puede ser menor a 0.",
