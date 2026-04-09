@@ -56,6 +56,12 @@ export const TiendaManager = () => {
 
   const guardarProducto = async (e) => {
     e.preventDefault();
+
+    if (Number(formProd.price) < 0 || Number(formProd.stock) < 0) {
+      alert("No se pueden ingresar números negativos ni en precio ni en stock.");
+      return;
+    }
+
     const data = new FormData();
     data.append("name", formProd.name);
     data.append("price", formProd.price);
@@ -167,10 +173,10 @@ export const TiendaManager = () => {
             style={
               tabActiva === "productos"
                 ? {
-                    borderBottom: "3px solid var(--color-primary)",
-                    color: "var(--color-primary)",
-                    borderRadius: 0,
-                  }
+                  borderBottom: "3px solid var(--color-primary)",
+                  color: "var(--color-primary)",
+                  borderRadius: 0,
+                }
                 : {}
             }
           >
@@ -184,10 +190,10 @@ export const TiendaManager = () => {
             style={
               tabActiva === "categorias"
                 ? {
-                    borderBottom: "3px solid var(--color-primary)",
-                    color: "var(--color-primary)",
-                    borderRadius: 0,
-                  }
+                  borderBottom: "3px solid var(--color-primary)",
+                  color: "var(--color-primary)",
+                  borderRadius: 0,
+                }
                 : {}
             }
           >
@@ -210,22 +216,21 @@ export const TiendaManager = () => {
               topBadges={
                 !producto.active
                   ? [
-                      {
-                        key: "inactive",
-                        text: "Inactivo",
-                        position: "end",
-                        className: "product-card-badge--warning",
-                      },
-                    ]
+                    {
+                      key: "inactive",
+                      text: "Inactivo",
+                      position: "end",
+                      className: "product-card-badge--warning",
+                    },
+                  ]
                   : []
               }
               footerAside={
                 <span
-                  className={`badge rounded-pill border px-3 py-2 ${
-                    Number(producto.stock) < 5
+                  className={`badge rounded-pill border px-3 py-2 ${Number(producto.stock) < 5
                       ? "bg-danger-subtle text-danger border-danger-subtle"
                       : "bg-light text-dark"
-                  }`}
+                    }`}
                 >
                   Stock: {producto.stock}
                 </span>
@@ -352,6 +357,7 @@ export const TiendaManager = () => {
                 <label className="form-label small fw-bold text-muted">Precio ($)</label>
                 <input
                   type="number"
+                  min="0"
                   className="form-control fw-bold"
                   value={formProd.price}
                   onChange={(e) => setFormProd({ ...formProd, price: e.target.value })}
@@ -362,6 +368,7 @@ export const TiendaManager = () => {
                 <label className="form-label small fw-bold text-muted">Stock inicial</label>
                 <input
                   type="number"
+                  min="0"
                   className="form-control fw-bold"
                   value={formProd.stock}
                   onChange={(e) => setFormProd({ ...formProd, stock: e.target.value })}
