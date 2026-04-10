@@ -88,8 +88,8 @@ export const TiendaManager = () => {
   const guardarProducto = async (e) => {
     e.preventDefault();
 
-    if (Number(formProd.price) < 0 || Number(formProd.stock) < 0) {
-      alert("No se pueden ingresar números negativos ni en precio ni en stock.");
+    if (formProd.price === "" || Number(formProd.price) < 0 || formProd.stock === "" || Number(formProd.stock) < 0) {
+      alert("No se pueden ingresar números negativos ni dejar campos vacíos.");
       return;
     }
 
@@ -419,10 +419,8 @@ export const TiendaManager = () => {
               <div className="col-md-6">
                 <label className="form-label small fw-bold text-muted">Precio ($)</label>
                 <input
-                  type="number"
+                  type="text"
                   inputMode="numeric"
-                  min="0"
-                  step="1"
                   className="form-control fw-bold"
                   value={formProd.price}
                   onKeyDown={bloquearTeclasNegativas}
@@ -434,10 +432,8 @@ export const TiendaManager = () => {
               <div className="col-md-6">
                 <label className="form-label small fw-bold text-muted">Stock inicial</label>
                 <input
-                  type="number"
+                  type="text"
                   inputMode="numeric"
-                  min="0"
-                  step="1"
                   className="form-control fw-bold"
                   value={formProd.stock}
                   onKeyDown={bloquearTeclasNegativas}
