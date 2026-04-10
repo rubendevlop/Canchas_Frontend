@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { getProducts, saveProduct, deleteProduct } from "../../helpers/product";
 import { getCategories, saveCategory, deleteCategory } from "../../helpers/category";
 import CardProduct from "../CardProduct";
@@ -17,15 +18,26 @@ export const TiendaManager = () => {
   const [mostrarModalCat, setMostrarModalCat] = useState(false);
   const [editandoId, setEditandoId] = useState(null);
   const [preview, setPreview] = useState(null);
+  const [productSubmitError, setProductSubmitError] = useState("");
 
-  const [formProd, setFormProd] = useState({
-    name: "",
-    price: "",
-    stock: "",
-    category: "",
-    description: "",
-    active: true,
-    imageFile: null,
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    setError,
+    clearErrors,
+    reset,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm({
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      price: "",
+      stock: "",
+      category: "",
+      description: "",
+      imageFile: null,
+    },
   });
 
   const [formCat, setFormCat] = useState({ name: "" });
@@ -54,63 +66,67 @@ export const TiendaManager = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setFormProd((prev) => ({
-        ...prev,
-        imageFile: file,
-      }));
+      setValue("imageFile", file, { shouldValidate: true });
+      clearErrors("imageFile");
       setPreview(URL.createObjectURL(file));
     }
   };
 
-  const handleSoloNumeros = (field, value) => {
-    const valorLimpio = value.replace(/\D/g, "");
+  const mapBackendProductErrors = (res) => {
+    const fieldMap = {
+      name: "name",
+      price: "price",
+      stock: "stock",
+      category: "category",
+      description: "description",
+      image: "imageFile",
+      archivo: "imageFile",
+    };
+    const backendErrors = res?.errors;
+    let hasMappedErrors = false;
 
-    setFormProd((prev) => ({
-      ...prev,
-      [field]: valorLimpio,
-    }));
-  };
+    const registerMappedError = (rawField, issue) => {
+      const fieldName = rawField || issue?.path || issue?.param || issue?.field;
+      const targetField = fieldMap[fieldName];
+      const message = issue?.msg || issue?.message || issue;
 
-  const bloquearTeclasInvalidas = (e) => {
-    if (["-", "+", "e", "E", ".", ","].includes(e.key)) {
-      e.preventDefault();
+      if (targetField && typeof message === "string" && message.trim()) {
+        hasMappedErrors = true;
+        setError(targetField, { type: "server", message });
+      }
+    };
+
+    if (Array.isArray(backendErrors)) {
+      backendErrors.forEach((issue) => registerMappedError(undefined, issue));
+    } else if (backendErrors && typeof backendErrors === "object") {
+      Object.entries(backendErrors).forEach(([field, issue]) => {
+        if (Array.isArray(issue)) {
+          issue.forEach((item) => registerMappedError(field, item));
+          return;
+        }
+        registerMappedError(field, issue);
+      });
+    }
+
+    if (!hasMappedErrors) {
+      setProductSubmitError(res?.message || "No se pudo guardar el producto.");
     }
   };
 
-  const handlePasteSoloNumeros = (e, field) => {
-    e.preventDefault();
-    const textoPegado = (e.clipboardData || window.clipboardData).getData("text");
-    const valorLimpio = textoPegado.replace(/\D/g, "");
-
-    setFormProd((prev) => ({
-      ...prev,
-      [field]: valorLimpio,
-    }));
-  };
-
-  const guardarProducto = async (e) => {
-    e.preventDefault();
-
-    if (formProd.price === "" || formProd.stock === "") {
-      alert("Precio y stock son obligatorios.");
-      return;
-    }
-
-    if (Number(formProd.price) < 0 || Number(formProd.stock) < 0) {
-      alert("No se pueden ingresar números negativos ni en precio ni en stock.");
-      return;
-    }
+  const guardarProducto = async (values) => {
+    clearErrors();
+    setProductSubmitError("");
 
     const data = new FormData();
-    data.append("name", formProd.name);
-    data.append("price", formProd.price);
-    data.append("stock", formProd.stock);
-    data.append("category", formProd.category);
-    data.append("description", formProd.description);
-    data.append("active", formProd.active);
+    data.append("name", values.name.trim());
+    data.append("price", values.price);
+    data.append("stock", values.stock);
+    data.append("category", values.category);
+    data.append("description", values.description?.trim() || "");
+    data.append("active", true);
 
-    if (formProd.imageFile) {
-      data.append("archivo", formProd.imageFile);
+    if (values.imageFile) {
+      data.append("archivo", values.imageFile);
     }
 
     try {
@@ -120,22 +136,14 @@ export const TiendaManager = () => {
         setMostrarModalProd(false);
         setEditandoId(null);
         setPreview(null);
-        setFormProd({
-          name: "",
-          price: "",
-          stock: "",
-          category: "",
-          description: "",
-          active: true,
-          imageFile: null,
-        });
+        reset();
         cargarDatos();
       } else {
-        alert(res.message);
+        mapBackendProductErrors(res);
       }
     } catch (error) {
       console.error("Error al guardar producto:", error);
-      alert("Error de conexion con el servidor. Revisa la consola.");
+      setProductSubmitError("Error de conexion con el servidor. Revisa la consola.");
     }
   };
 
@@ -172,12 +180,14 @@ export const TiendaManager = () => {
 
   const abrirEdicionProducto = (producto) => {
     setEditandoId(producto._id);
+    setProductSubmitError("");
     setPreview(producto.image || IMAGE_DEFAULT);
-    setFormProd({
-      ...producto,
-      price: String(producto.price ?? ""),
-      stock: String(producto.stock ?? ""),
-      category: producto.category?._id || producto.category,
+    reset({
+      name: producto.name || "",
+      price: producto.price ?? "",
+      stock: producto.stock ?? "",
+      category: producto.category?._id || producto.category || "",
+      description: producto.description || "",
       imageFile: null,
     });
     setMostrarModalProd(true);
@@ -199,13 +209,13 @@ export const TiendaManager = () => {
 
             if (tabActiva === "productos") {
               setPreview(IMAGE_DEFAULT);
-              setFormProd({
+              setProductSubmitError("");
+              reset({
                 name: "",
                 price: "",
                 stock: "",
                 category: "",
                 description: "",
-                active: true,
                 imageFile: null,
               });
               setMostrarModalProd(true);
@@ -383,8 +393,7 @@ export const TiendaManager = () => {
             <h5 className="fw-bold mb-4">
               {editandoId ? "Actualizar Producto" : "Crear Nuevo Producto"}
             </h5>
-
-            <form onSubmit={guardarProducto} noValidate className="row g-3">
+            <form onSubmit={handleSubmit(guardarProducto)} className="row g-3" noValidate>
               <div className="col-12 text-center mb-2">
                 <div
                   className="border rounded p-2 bg-light mx-auto"
@@ -408,64 +417,68 @@ export const TiendaManager = () => {
                   accept="image/*"
                   onChange={handleFileChange}
                 />
+                {errors.imageFile && (
+                  <small className="text-danger d-block mt-1">{errors.imageFile.message}</small>
+                )}
               </div>
 
               <div className="col-12">
                 <label className="form-label small fw-bold text-muted">Nombre</label>
                 <input
                   type="text"
-                  className="form-control text-uppercase fw-bold"
-                  value={formProd.name}
-                  onChange={(e) =>
-                    setFormProd((prev) => ({
-                      ...prev,
-                      name: e.target.value,
-                    }))
-                  }
-                  required
+                  className={`form-control text-uppercase fw-bold ${errors.name ? "is-invalid" : ""}`}
+                  {...register("name", {
+                    required: "El nombre es obligatorio.",
+                    validate: (value) =>
+                      value.trim().length > 0 || "El nombre es obligatorio.",
+                  })}
                 />
+                {errors.name && <small className="text-danger d-block mt-1">{errors.name.message}</small>}
               </div>
 
               <div className="col-md-6">
                 <label className="form-label small fw-bold text-muted">Precio ($)</label>
                 <input
-                  type="text"
-                  inputMode="numeric"
-                  className="form-control fw-bold"
-                  value={formProd.price}
-                  onKeyDown={bloquearTeclasInvalidas}
-                  onChange={(e) => handleSoloNumeros("price", e.target.value)}
-                  onPaste={(e) => handlePasteSoloNumeros(e, "price")}
-                  required
+                  type="number"
+                  className={`form-control fw-bold ${errors.price ? "is-invalid" : ""}`}
+                  {...register("price", {
+                    required: "El precio es obligatorio.",
+                    valueAsNumber: true,
+                    validate: (value) =>
+                      Number.isFinite(value) || "Ingresa un precio válido.",
+                    min: {
+                      value: 0,
+                      message: "El precio no puede ser menor a 0.",
+                    },
+                  })}
                 />
+                {errors.price && <small className="text-danger d-block mt-1">{errors.price.message}</small>}
               </div>
 
               <div className="col-md-6">
                 <label className="form-label small fw-bold text-muted">Stock inicial</label>
                 <input
-                  type="text"
-                  inputMode="numeric"
-                  className="form-control fw-bold"
-                  value={formProd.stock}
-                  onKeyDown={bloquearTeclasInvalidas}
-                  onChange={(e) => handleSoloNumeros("stock", e.target.value)}
-                  onPaste={(e) => handlePasteSoloNumeros(e, "stock")}
-                  required
+                  type="number"
+                  className={`form-control fw-bold ${errors.stock ? "is-invalid" : ""}`}
+                  {...register("stock", {
+                    required: "El stock inicial es obligatorio.",
+                    valueAsNumber: true,
+                    validate: (value) =>
+                      Number.isFinite(value) || "Ingresa un stock válido.",
+                    min: {
+                      value: 0,
+                      message: "El stock no puede ser menor a 0.",
+                    },
+                  })}
                 />
+                {errors.stock && <small className="text-danger d-block mt-1">{errors.stock.message}</small>}
               </div>
 
               <div className="col-12">
                 <label className="form-label small fw-bold text-muted">Categoria</label>
                 <select
-                  className="form-select"
-                  value={formProd.category}
-                  onChange={(e) =>
-                    setFormProd((prev) => ({
-                      ...prev,
-                      category: e.target.value,
-                    }))
-                  }
-                  required
+                  className={`form-select ${errors.category ? "is-invalid" : ""}`}
+                  {...register("category", { required: "La categoria es obligatoria." })}
                 >
                   <option value="">Seleccione una categoria...</option>
                   {categorias.map((categoria) => (
@@ -474,6 +487,9 @@ export const TiendaManager = () => {
                     </option>
                   ))}
                 </select>
+                {errors.category && (
+                  <small className="text-danger d-block mt-1">{errors.category.message}</small>
+                )}
               </div>
 
               <div className="col-12">
@@ -483,22 +499,26 @@ export const TiendaManager = () => {
                 <textarea
                   className="form-control"
                   rows="2"
-                  value={formProd.description}
-                  onChange={(e) =>
-                    setFormProd((prev) => ({
-                      ...prev,
-                      description: e.target.value,
-                    }))
-                  }
+                  {...register("description")}
                   placeholder="Ej: Bebida isotonic 500ml"
                 ></textarea>
               </div>
-
+              {productSubmitError && (
+                <div className="col-12">
+                  <div className="alert alert-danger mb-0 py-2" role="alert">
+                    {productSubmitError}
+                  </div>
+                </div>
+              )}
               <div className="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
                 <button
                   type="button"
                   className="btn btn-light px-4"
-                  onClick={() => setMostrarModalProd(false)}
+                  onClick={() => {
+                    setMostrarModalProd(false);
+                    setProductSubmitError("");
+                    clearErrors();
+                  }}
                 >
                   Cancelar
                 </button>
@@ -507,8 +527,9 @@ export const TiendaManager = () => {
                   type="submit"
                   className="btn text-white px-4 fw-bold"
                   style={{ backgroundColor: "var(--color-primary)" }}
+                  disabled={!isValid || isSubmitting}
                 >
-                  Guardar
+                  {isSubmitting ? "Guardando..." : "Guardar"}
                 </button>
               </div>
             </form>
