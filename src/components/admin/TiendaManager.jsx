@@ -45,7 +45,11 @@ export const TiendaManager = () => {
   const cargarDatos = async () => {
     setLoading(true);
     try {
-      const [dataProd, dataCat] = await Promise.all([getProducts(undefined, true), getCategories()]);
+      const [dataProd, dataCat] = await Promise.all([
+        getProducts(undefined, true),
+        getCategories(),
+      ]);
+
       if (dataProd) setProductos(dataProd);
       if (dataCat.ok) setCategorias(dataCat.categories);
     } catch (error) {
@@ -127,6 +131,7 @@ export const TiendaManager = () => {
 
     try {
       const res = await saveProduct(editandoId, data);
+
       if (res.ok) {
         setMostrarModalProd(false);
         setEditandoId(null);
@@ -144,11 +149,14 @@ export const TiendaManager = () => {
 
   const guardarCategoria = async (e) => {
     e.preventDefault();
+
     try {
       const res = await saveCategory(editandoId, formCat);
+
       if (res.ok) {
         setMostrarModalCat(false);
         setEditandoId(null);
+        setFormCat({ name: "" });
         cargarDatos();
       } else {
         alert(res.message);
@@ -161,6 +169,7 @@ export const TiendaManager = () => {
 
   const borrarItem = async (tipo, id, nombre) => {
     if (!window.confirm(`Estas seguro que deseas eliminar "${nombre}"?`)) return;
+
     try {
       const data = tipo === "prod" ? await deleteProduct(id) : await deleteCategory(id);
       if (data.ok) cargarDatos();
@@ -193,9 +202,11 @@ export const TiendaManager = () => {
           </h2>
           <p className="text-muted mb-0">Gestion de inventario y clasificacion</p>
         </div>
+
         <button
           onClick={() => {
             setEditandoId(null);
+
             if (tabActiva === "productos") {
               setPreview(IMAGE_DEFAULT);
               setProductSubmitError("");
@@ -224,32 +235,35 @@ export const TiendaManager = () => {
       <ul className="nav nav-tabs mb-4 border-bottom">
         <li className="nav-item">
           <button
-            className={`nav-link border-0 ${tabActiva === "productos" ? "active fw-bold" : "text-muted"}`}
+            className={`nav-link border-0 ${tabActiva === "productos" ? "active fw-bold" : "text-muted"
+              }`}
             onClick={() => setTabActiva("productos")}
             style={
               tabActiva === "productos"
                 ? {
-                    borderBottom: "3px solid var(--color-primary)",
-                    color: "var(--color-primary)",
-                    borderRadius: 0,
-                  }
+                  borderBottom: "3px solid var(--color-primary)",
+                  color: "var(--color-primary)",
+                  borderRadius: 0,
+                }
                 : {}
             }
           >
             Productos ({productos.length})
           </button>
         </li>
+
         <li className="nav-item">
           <button
-            className={`nav-link border-0 ${tabActiva === "categorias" ? "active fw-bold" : "text-muted"}`}
+            className={`nav-link border-0 ${tabActiva === "categorias" ? "active fw-bold" : "text-muted"
+              }`}
             onClick={() => setTabActiva("categorias")}
             style={
               tabActiva === "categorias"
                 ? {
-                    borderBottom: "3px solid var(--color-primary)",
-                    color: "var(--color-primary)",
-                    borderRadius: 0,
-                  }
+                  borderBottom: "3px solid var(--color-primary)",
+                  color: "var(--color-primary)",
+                  borderRadius: 0,
+                }
                 : {}
             }
           >
@@ -272,22 +286,21 @@ export const TiendaManager = () => {
               topBadges={
                 !producto.active
                   ? [
-                      {
-                        key: "inactive",
-                        text: "Inactivo",
-                        position: "end",
-                        className: "product-card-badge--warning",
-                      },
-                    ]
+                    {
+                      key: "inactive",
+                      text: "Inactivo",
+                      position: "end",
+                      className: "product-card-badge--warning",
+                    },
+                  ]
                   : []
               }
               footerAside={
                 <span
-                  className={`badge rounded-pill border px-3 py-2 ${
-                    Number(producto.stock) < 5
+                  className={`badge rounded-pill border px-3 py-2 ${Number(producto.stock) < 5
                       ? "bg-danger-subtle text-danger border-danger-subtle"
                       : "bg-light text-dark"
-                  }`}
+                    }`}
                 >
                   Stock: {producto.stock}
                 </span>
@@ -302,6 +315,7 @@ export const TiendaManager = () => {
                     <i className="bi bi-pencil-square"></i>
                     Editar
                   </button>
+
                   <button
                     onClick={() => borrarItem("prod", producto._id, producto.name)}
                     className="btn btn-outline-danger btn-sm d-flex align-items-center justify-content-center gap-1 product-card-action-btn"
@@ -350,6 +364,7 @@ export const TiendaManager = () => {
                         <i className="bi bi-pencil-square"></i>
                         Editar
                       </button>
+
                       <button
                         onClick={() => borrarItem("cat", categoria._id, categoria.name)}
                         className="btn btn-sm btn-outline-danger d-flex align-items-center gap-2 px-3 fw-medium"
@@ -391,8 +406,11 @@ export const TiendaManager = () => {
                   />
                 </div>
               </div>
+
               <div className="col-12">
-                <label className="form-label small fw-bold text-muted">Imagen del producto</label>
+                <label className="form-label small fw-bold text-muted">
+                  Imagen del producto
+                </label>
                 <input
                   type="file"
                   className="form-control form-control-sm"
@@ -403,6 +421,7 @@ export const TiendaManager = () => {
                   <small className="text-danger d-block mt-1">{errors.imageFile.message}</small>
                 )}
               </div>
+
               <div className="col-12">
                 <label className="form-label small fw-bold text-muted">Nombre</label>
                 <input
@@ -416,6 +435,7 @@ export const TiendaManager = () => {
                 />
                 {errors.name && <small className="text-danger d-block mt-1">{errors.name.message}</small>}
               </div>
+
               <div className="col-md-6">
                 <label className="form-label small fw-bold text-muted">Precio ($)</label>
                 <input
@@ -434,6 +454,7 @@ export const TiendaManager = () => {
                 />
                 {errors.price && <small className="text-danger d-block mt-1">{errors.price.message}</small>}
               </div>
+
               <div className="col-md-6">
                 <label className="form-label small fw-bold text-muted">Stock inicial</label>
                 <input
@@ -452,6 +473,7 @@ export const TiendaManager = () => {
                 />
                 {errors.stock && <small className="text-danger d-block mt-1">{errors.stock.message}</small>}
               </div>
+
               <div className="col-12">
                 <label className="form-label small fw-bold text-muted">Categoria</label>
                 <select
@@ -469,8 +491,11 @@ export const TiendaManager = () => {
                   <small className="text-danger d-block mt-1">{errors.category.message}</small>
                 )}
               </div>
+
               <div className="col-12">
-                <label className="form-label small fw-bold text-muted">Descripcion corta</label>
+                <label className="form-label small fw-bold text-muted">
+                  Descripcion corta
+                </label>
                 <textarea
                   className="form-control"
                   rows="2"
@@ -497,6 +522,7 @@ export const TiendaManager = () => {
                 >
                   Cancelar
                 </button>
+
                 <button
                   type="submit"
                   className="btn text-white px-4 fw-bold"
@@ -520,18 +546,26 @@ export const TiendaManager = () => {
             <h5 className="fw-bold mb-4">
               {editandoId ? "Editar Categoria" : "Nueva Categoria"}
             </h5>
+
             <form onSubmit={guardarCategoria}>
               <div className="mb-4">
-                <label className="form-label small fw-bold text-muted">Nombre de la categoria</label>
+                <label className="form-label small fw-bold text-muted">
+                  Nombre de la categoria
+                </label>
                 <input
                   type="text"
                   className="form-control fw-bold text-uppercase"
                   value={formCat.name}
-                  onChange={(e) => setFormCat({ name: e.target.value })}
+                  onChange={(e) =>
+                    setFormCat({
+                      name: e.target.value,
+                    })
+                  }
                   required
                   placeholder="Ej: BEBIDAS"
                 />
               </div>
+
               <div className="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
                 <button
                   type="button"
@@ -540,6 +574,7 @@ export const TiendaManager = () => {
                 >
                   Cancelar
                 </button>
+
                 <button
                   type="submit"
                   className="btn text-white px-4 fw-bold"

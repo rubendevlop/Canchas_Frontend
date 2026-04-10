@@ -30,9 +30,6 @@ export const AppRouter = () => {
         <Route element={<ProtectedRoute adminOnly={false} />}>
           <Route path="/cart" element={<CartView />} />
           <Route path="/my-bookings" element={<MyBookingsView />} />
-          <Route path="/ecommerce" element={<EcommerceView />} />
-          <Route path="/fields" element={<Fields />} />
-          <Route path="/producto/:id" element={<ProductDetailView />} />
         </Route>
 
         <Route element={<ProtectedRoute adminOnly={true} />}>
