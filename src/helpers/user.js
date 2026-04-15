@@ -1,5 +1,19 @@
 const API_URL = `${import.meta.env.VITE_API_URL}/users`;
 
+const readJsonSafely = async (response) => {
+  try {
+    return await response.json();
+  } catch {
+    return {};
+  }
+};
+
+const normalizeApiResult = (response, data) => ({
+  ...data,
+  ok: Boolean(response.ok && (data?.ok ?? true)),
+  status: response.status,
+});
+
 const getUsers = async () => {
   try {
     const response = await fetch(API_URL, {
@@ -7,13 +21,14 @@ const getUsers = async () => {
       credentials: "include",
     });
 
-    const data = await response.json();
+    const data = await readJsonSafely(response);
+    const result = normalizeApiResult(response, data);
 
-    if (!response.ok) {
-      throw new Error(data.message || "Error al obtener usuarios");
+    if (!result.ok) {
+      throw new Error(result.message || "Error al obtener usuarios");
     }
 
-    return data;
+    return result;
   } catch (error) {
     console.log("getUsers error:", error);
     return { ok: false, message: error.message };
@@ -27,13 +42,14 @@ const activateUser = async (id) => {
       credentials: "include",
     });
 
-    const data = await response.json();
+    const data = await readJsonSafely(response);
+    const result = normalizeApiResult(response, data);
 
-    if (!response.ok) {
-      throw new Error(data.message || "Error al activar usuario");
+    if (!result.ok) {
+      throw new Error(result.message || "Error al activar usuario");
     }
 
-    return data;
+    return result;
   } catch (error) {
     console.log("activateUser error:", error);
     return { ok: false, message: error.message };
@@ -47,13 +63,14 @@ const suspendUser = async (id) => {
       credentials: "include",
     });
 
-    const data = await response.json();
+    const data = await readJsonSafely(response);
+    const result = normalizeApiResult(response, data);
 
-    if (!response.ok) {
-      throw new Error(data.message || "Error al suspender usuario");
+    if (!result.ok) {
+      throw new Error(result.message || "Error al suspender usuario");
     }
 
-    return data;
+    return result;
   } catch (error) {
     console.log("suspendUser error:", error);
     return { ok: false, message: error.message };

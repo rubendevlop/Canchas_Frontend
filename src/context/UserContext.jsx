@@ -28,11 +28,6 @@ const UserProvider = ({ children }) => {
           response.data;
       }
 
-      if (nextUser?.active === false) {
-        setUser(null);
-        return nextUser;
-      }
-
       setUser(nextUser);
       return nextUser;
     } catch (error) {

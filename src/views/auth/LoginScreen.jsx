@@ -5,7 +5,6 @@ import "../../css/login.css";
 import imagenlogin from "../../assets/imagen1.webp";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { logIn } from "../../helpers/auth";
-import { SUSPENDED_ACCOUNT_MESSAGE } from "../../helpers/handleApiError";
 import AlertApp from "../../components/AlertApp";
 import visible from "../../assets/visible.png";
 import invisible from "../../assets/invisible.png";
@@ -36,16 +35,7 @@ const LoginScreen = () => {
     setResponse(loginResponse);
 
     if (loginResponse.ok) {
-      const profile = await loadUserData();
-
-      if (profile?.active === false) {
-        setResponse({
-          ok: false,
-          message: SUSPENDED_ACCOUNT_MESSAGE,
-        });
-        return;
-      }
-
+      await loadUserData();
       navigate(redirectTarget || "/", { replace: true });
     }
   };
