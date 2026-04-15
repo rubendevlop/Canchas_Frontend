@@ -6,6 +6,7 @@ const IMAGE_DEFAULT =
   "https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&q=80&w=1200";
 const FIELD_NAME_MIN = 2;
 const FIELD_NAME_MAX = 20;
+const MAX_PRICE_LIMIT = 999999999;
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -404,6 +405,7 @@ export const CanchasManager = () => {
                 <input
                   type="number"
                   min="0"
+                  max={MAX_PRICE_LIMIT}
                   step="0.01"
                   className={`form-control fw-bold ${errors.pricePerHour ? "is-invalid" : ""}`}
                   {...register("pricePerHour", {
@@ -414,6 +416,10 @@ export const CanchasManager = () => {
                     min: {
                       value: 0,
                       message: "El precio no puede ser menor a 0.",
+                    },
+                    max: {
+                      value: MAX_PRICE_LIMIT,
+                      message: `El precio no puede superar ${MAX_PRICE_LIMIT}.`,
                     },
                   })}
                 />

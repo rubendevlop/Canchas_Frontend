@@ -10,6 +10,7 @@ const IMAGE_DEFAULT =
 const PRODUCT_NAME_MIN = 2;
 const PRODUCT_NAME_MAX = 20;
 const PRODUCT_DESCRIPTION_MAX = 500;
+const MAX_NUMERIC_LIMIT = 999999999;
 
 const escapeRegExp = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
@@ -521,6 +522,7 @@ export const TiendaManager = () => {
                 <input
                   type="number"
                   min="0"
+                  max={MAX_NUMERIC_LIMIT}
                   step="0.01"
                   className={`form-control fw-bold ${errors.price ? "is-invalid" : ""}`}
                   {...register("price", {
@@ -532,6 +534,10 @@ export const TiendaManager = () => {
                       value: 0,
                       message: "El precio no puede ser menor a 0.",
                     },
+                    max: {
+                      value: MAX_NUMERIC_LIMIT,
+                      message: `El precio no puede superar ${MAX_NUMERIC_LIMIT}.`,
+                    },
                   })}
                 />
                 {errors.price && <small className="text-danger d-block mt-1">{errors.price.message}</small>}
@@ -542,6 +548,7 @@ export const TiendaManager = () => {
                 <input
                   type="number"
                   min="0"
+                  max={MAX_NUMERIC_LIMIT}
                   step="1"
                   className={`form-control fw-bold ${errors.stock ? "is-invalid" : ""}`}
                   {...register("stock", {
@@ -556,6 +563,10 @@ export const TiendaManager = () => {
                     min: {
                       value: 0,
                       message: "El stock no puede ser menor a 0.",
+                    },
+                    max: {
+                      value: MAX_NUMERIC_LIMIT,
+                      message: `El stock no puede superar ${MAX_NUMERIC_LIMIT}.`,
                     },
                   })}
                 />
