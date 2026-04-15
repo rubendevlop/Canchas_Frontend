@@ -44,11 +44,14 @@ export const flattenBookingSlots = (booking, field) => {
       return null;
     }
 
+    const slotUser = slot.user;
+
     return {
       id: `${booking._id || field?._id || "booking"}-${hour}`,
       hour,
       status: slot.status,
-      userId: slot.user?._id || slot.user || null,
+      userId: slotUser?._id || slotUser || null,
+      userName: slotUser?.username || slotUser?.name || slotUser?.email || null,
       fieldId: booking.field || field?._id || null,
       fieldName: field?.name || "Cancha",
       date: booking.date,

@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { getField } from "../../helpers/field";
 import { cancelBooking, getBookingsByDate } from "../../helpers/booking";
 import { generateDays } from "../../helpers/date";
+import { getUsers } from "../../helpers/user";
 
 export const ReservasManager = () => {
   const dateOptions = useMemo(() => generateDays(7), []);
@@ -16,10 +17,23 @@ export const ReservasManager = () => {
     setError("");
 
     try {
-      const fields = await getField(true);
+      const [fields, usersData] = await Promise.all([getField(true), getUsers()]);
       const availableFields = Array.isArray(fields) ? fields : [];
+      const users = usersData?.ok && Array.isArray(usersData.users) ? usersData.users : [];
+      const usersById = new Map(
+        users.map((user) => [String(user._id), user.username || user.name || user.email || null])
+      );
+
       const bookingsData = await getBookingsByDate(dateToLoad, availableFields);
-      setBookings(bookingsData);
+      const bookingsWithUserName = bookingsData.map((booking) => ({
+        ...booking,
+        userName:
+          booking.userName ||
+          usersById.get(String(booking.userId)) ||
+          null,
+      }));
+
+      setBookings(bookingsWithUserName);
     } catch (loadError) {
       console.error("Error cargando reservas:", loadError);
       setError("No se pudieron cargar las reservas.");
@@ -161,7 +175,7 @@ export const ReservasManager = () => {
                   </div>
 
                   <div className="small text-muted">
-                    Usuario: {booking.userId || "Sin asignar"}
+                    Usuario: {booking.userName || (booking.userId ? "Usuario sin nombre" : "Sin asignar")}
                   </div>
 
                   <button
