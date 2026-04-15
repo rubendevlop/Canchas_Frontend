@@ -13,7 +13,7 @@ const getField = async (adminRequest = false) => {
 
 const saveField = async (id, data) => {
   const targetUrl = id ? `${url}/${id}` : url;
-  const method = id ? 'PATCH' : 'POST';
+  const method = id ? 'PUT' : 'POST';
   const response = await fetch(targetUrl, { method, body: data, credentials: 'include' });
   return await response.json();
 };
