@@ -6,7 +6,7 @@ const logOut = async () => {
     headers: {
       "Content-Type": "application/json",
     },
-    credentials: "include", // Importante para enviar la cookie HttpOnly
+    credentials: "include",
   });
 
   const data = await response.json();

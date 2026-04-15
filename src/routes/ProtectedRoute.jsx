@@ -17,12 +17,10 @@ export const ProtectedRoute = ({ adminOnly = false }) => {
     );
   }
 
-  // Si no hay usuario logueado
   if (!user) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // Si requiere ser admin y el usuario no lo es
   if (adminOnly && !isAdminUser) {
     return <Navigate to="/" replace />;
   }

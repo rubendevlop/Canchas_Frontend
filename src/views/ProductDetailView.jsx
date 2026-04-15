@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import AddToCartButton from "../components/AddToCartButton";
 import { formatPrice } from "../helpers/formatPrice";
 import { getProductById } from "../helpers/product";
+
 const ProductDetailView = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -40,8 +41,6 @@ const ProductDetailView = () => {
 
     fetchProduct();
   }, [id]);
-
-
 
   if (loadingProduct) {
     return (

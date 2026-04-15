@@ -29,10 +29,10 @@ export default function CardProduct({
 
   const productImage = buildProductImage(product.image || product.images?.[0]);
   const productName = product.name || "Producto sin nombre";
-  const productDescription = product.description || "Sin descripcion";
+  const productDescription = product.description || "Sin descripción";
   const productPrice = Number(product.price) || 0;
   const productStock = Number(product.stock) || 0;
-  const productCategory = product.category?.name || "Sin categoria";
+  const productCategory = product.category?.name || "Sin categoría";
   const productLink = linkTo === undefined ? `/producto/${product._id}` : linkTo;
 
   const resolvedTopBadges = [

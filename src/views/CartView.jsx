@@ -33,7 +33,7 @@ const CartView = () => {
         setRecommendationError("");
 
         const products = await getProducts();
-        
+
         setRecommendedProducts(
           Array.isArray(products)
             ? products.filter(isVisibleProduct).slice(0, 6)
@@ -41,7 +41,7 @@ const CartView = () => {
         );
       } catch (error) {
         console.error("Error en recomendados:", error);
-        setRecommendationError(error.message || "Error cargando productos");
+        setRecommendationError(error.message || "Error al cargar productos");
       } finally {
         setLoadingRecommendations(false);
       }
@@ -64,8 +64,6 @@ const CartView = () => {
   const totalProducts = useMemo(() => {
     return cartItems.reduce((acc, item) => acc + (Number(item?.quantity) || 0), 0);
   }, [cartItems]);
-
-
 
   const handleCheckout = async () => {
     try {

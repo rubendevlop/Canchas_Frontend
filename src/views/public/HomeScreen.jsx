@@ -12,11 +12,10 @@ const HomeScreen = () => {
     <main>
       <section className="card-futbol">
         <div className="zoom-container">
-          <img src={principalImg} alt="Canchas de Futbol 5" className="zoom-image" />
+          <img src={principalImg} alt="Canchas de Fútbol 5" className="zoom-image" />
           <div className="overlay-content">
             <div className="main-text">
               <h1 className="home-title">Viví el fútbol como se debe</h1>
-              {/* <p className="subtitle">Armá el equipo, entrá a la cancha y disfrutá cada partido</p> */}
             </div>
             <div className="home-badges">
               <span className="home-badge">Abierto 18:00 a 00:00</span>
@@ -42,7 +41,7 @@ const HomeScreen = () => {
           <div className="home-tag">
             <i className="fa fa-calendar-o" aria-hidden="true"></i> Reserva en segundos
           </div>
-          <h2 className="main-title">Tu proximo partido ya tiene cancha.</h2>
+          <h2 className="main-title">Tu próximo partido ya tiene cancha.</h2>
           <p className="slogan">El complejo elegido por los verdaderos jugadores.</p>
           <div className="mega-div">
             <div className="imgs-cont">
@@ -79,7 +78,7 @@ const HomeScreen = () => {
       <section className="about-complex">
         <div className="description-container">
           <h3 className="ab-co-title">Sobre el complejo</h3>
-          <p>Todo lo que necesitas saber para jugar cómodo y seguro</p>
+          <p>Todo lo que necesitás saber para jugar cómodo y seguro</p>
           <div className="features-list">
             <div className="feature-item">
               <div className="icon-circle">

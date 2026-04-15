@@ -2,12 +2,15 @@ import { getFriendlyErrorMessage } from "../helpers/handleApiError";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/payment`;
 const MERCADO_PAGO_UNAVAILABLE_MESSAGE =
-  "La integracion de pagos con Mercado Pago aun no se encuentra disponible. Por favor, contacta al administrador para coordinar la compra.";
+  "La integración de pagos con Mercado Pago aún no se encuentra disponible. Por favor, contactá al administrador para coordinar la compra.";
 
 const getPaymentFriendlyMessage = (data) => {
   const backendMessage = data?.msg || data?.message || "";
+  const normalizedBackendMessage = backendMessage
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 
-  if (/hay productos inv[aá]lidos en el carrito/i.test(backendMessage)) {
+  if (/hay productos invalidos en el carrito/i.test(normalizedBackendMessage)) {
     return MERCADO_PAGO_UNAVAILABLE_MESSAGE;
   }
 

@@ -41,13 +41,13 @@ const CardField = ({ court, openModal }) => {
           <h5 className="court-title">{name}</h5>
 
           <div className="d-flex gap-2 flex-wrap mb-3">
-            <span className="badge-tag">Futbol 5</span>
-            <span className="badge-tag">Cesped sintetico</span>
+            <span className="badge-tag">Fútbol 5</span>
+            <span className="badge-tag">Césped sintético</span>
             <span className="badge-tag">Al aire libre</span>
           </div>
 
           <p className="court-copy">
-            Espacio listo para jugar comodo, reservar rapido y asegurar tu horario sin vueltas.
+            Espacio listo para jugar cómodo, reservar rápido y asegurar tu horario sin vueltas.
           </p>
 
           <div className="court-footer d-flex justify-content-between align-items-center">
