@@ -16,7 +16,7 @@ function AddToCartButton({ product, compact = false, label }) {
     const currentUser = user?._id ? user : await loadUserData();
 
     if (!currentUser?._id) {
-      alert("Debes iniciar sesión para agregar productos al carrito");
+      alert("Debes iniciar sesion para agregar productos al carrito");
       navigate("/login", { state: { from: location } });
       return;
     }
@@ -26,16 +26,18 @@ function AddToCartButton({ product, compact = false, label }) {
 
   return (
     <button
-      className={`btn btn-success custom-add-btn ${compact ? "custom-add-btn--compact" : "w-100"}`}
+      className={`btn btn-success custom-add-btn ${
+        compact ? "custom-add-btn--compact" : "w-100"
+      }`}
       onClick={handleAddToCart}
       disabled={!product || product.stock <= 0 || loadingCart}
     >
       {compact ? (
-        product?.stock > 0 ? (label || "Agregar") : "Sin stock"
+        product?.stock > 0 ? label || "Agregar" : "Sin stock"
       ) : (
         <>
           <i className="bi bi-cart-plus me-2"></i>
-          {product?.stock > 0 ? (label || "Agregar al carrito") : "Sin stock"}
+          {product?.stock > 0 ? label || "Agregar al carrito" : "Sin stock"}
         </>
       )}
     </button>

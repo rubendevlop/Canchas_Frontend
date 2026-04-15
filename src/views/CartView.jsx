@@ -10,21 +10,21 @@ import CardProduct from "../components/CardProduct";
 import ProductCardShelf from "../components/ProductCardShelf";
 import "../css/cartView.css";
 
-const API_URL = `${import.meta.env.VITE_API_URL}`;
-
 const CartView = () => {
-  const { items = [], clearCart, loadingCart, loadCart } = useCart();
+  const {
+    items: cartItems = [],
+    clearCart,
+    loadingCart,
+    increaseItem,
+    decreaseItem,
+    removeItem,
+  } = useCart();
 
-  const [cartItems, setCartItems] = useState([]);
   const [loadingAction, setLoadingAction] = useState(false);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const [loadingRecommendations, setLoadingRecommendations] = useState(true);
   const [recommendationError, setRecommendationError] = useState("");
   const [loadingPayment, setLoadingPayment] = useState(false);
-
-  useEffect(() => {
-    setCartItems(items);
-  }, [items]);
 
   useEffect(() => {
     const fetchRecommendedProducts = async () => {
@@ -62,7 +62,10 @@ const CartView = () => {
   }, [cartItems]);
 
   const totalProducts = useMemo(() => {
-    return cartItems.reduce((acc, item) => acc + (Number(item?.quantity) || 0), 0);
+    return cartItems.reduce(
+      (acc, item) => acc + (Number(item?.quantity) || 0),
+      0
+    );
   }, [cartItems]);
 
   const handleCheckout = async () => {
@@ -89,32 +92,14 @@ const CartView = () => {
       const nextQuantity = currentQuantity + 1;
 
       if (typeof stock === "number" && nextQuantity > stock) {
-        alert("No hay más stock disponible");
+        alert("No hay mas stock disponible");
         return;
       }
 
       setLoadingAction(true);
-
-      const response = await fetch(`${API_URL}/cart/${productId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ quantity: nextQuantity }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "No se pudo aumentar la cantidad");
-      }
-
-      setCartItems(data?.cart?.items || []);
-      await loadCart();
+      await increaseItem(productId);
     } catch (error) {
       console.error("Error aumentando cantidad:", error);
-      alert(error.message || "No se pudo aumentar la cantidad");
     } finally {
       setLoadingAction(false);
     }
@@ -128,27 +113,9 @@ const CartView = () => {
       }
 
       setLoadingAction(true);
-
-      const response = await fetch(`${API_URL}/cart/${productId}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ quantity: currentQuantity - 1 }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "No se pudo disminuir la cantidad");
-      }
-
-      setCartItems(data?.cart?.items || []);
-      await loadCart();
+      await decreaseItem(productId);
     } catch (error) {
       console.error("Error disminuyendo cantidad:", error);
-      alert(error.message || "No se pudo disminuir la cantidad");
     } finally {
       setLoadingAction(false);
     }
@@ -157,23 +124,9 @@ const CartView = () => {
   const handleRemoveItem = async (productId) => {
     try {
       setLoadingAction(true);
-
-      const response = await fetch(`${API_URL}/cart/${productId}`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.message || "No se pudo eliminar el producto");
-      }
-
-      setCartItems(data?.cart?.items || []);
-      await loadCart();
+      await removeItem(productId);
     } catch (error) {
       console.error("Error eliminando producto:", error);
-      alert(error.message || "No se pudo eliminar el producto");
     } finally {
       setLoadingAction(false);
     }
@@ -213,7 +166,7 @@ const CartView = () => {
           <div>
             <h1 className="fw-bold mb-2">Carrito de compras</h1>
             <p className="text-muted mb-0">
-              Revisá tus productos y continuá con el pago.
+              Revisa tus productos y continua con el pago.
             </p>
           </div>
 
@@ -241,16 +194,17 @@ const CartView = () => {
               <div className="card-body p-0">
                 {cartItems.length === 0 ? (
                   <div className="p-4 text-center">
-                    <h3 className="h5 fw-bold">Tu carrito está vacío</h3>
+                    <h3 className="h5 fw-bold">Tu carrito esta vacio</h3>
                     <p className="text-muted mb-0">
-                      Cuando agregues productos, los vas a ver acá.
+                      Cuando agregues productos, los vas a ver aca.
                     </p>
                   </div>
                 ) : (
                   cartItems.map((item, index) => {
                     const product = item.product || {};
                     const productId = product._id || item.productId || item._id;
-                    const title = product.name || item.name || "Producto sin nombre";
+                    const title =
+                      product.name || item.name || "Producto sin nombre";
                     const image =
                       product.image ||
                       product.images?.[0] ||
@@ -289,7 +243,9 @@ const CartView = () => {
                             <div className="d-flex flex-column gap-3">
                               <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3">
                                 <div>
-                                  <h3 className="h3 h-md-4 fw-bold mb-2">{title}</h3>
+                                  <h3 className="h3 h-md-4 fw-bold mb-2">
+                                    {title}
+                                  </h3>
                                   <p className="cart-price-unit mb-0">
                                     {formatPrice(price)}
                                   </p>
@@ -354,7 +310,7 @@ const CartView = () => {
 
             <div className="card border-0 shadow-sm rounded-4 overflow-hidden">
               <div className="card-header bg-white border-bottom py-3 px-4">
-                <h2 className="h3 fw-bold mb-0">También te puede interesar</h2>
+                <h2 className="h3 fw-bold mb-0">Tambien te puede interesar</h2>
               </div>
 
               <div className="card-body p-3 p-md-4">
@@ -373,12 +329,12 @@ const CartView = () => {
                     </p>
                   </div>
                 ) : (
-                  <ProductCardShelf className="cart-recommendations-grid" mobileCarousel>
+                  <ProductCardShelf
+                    className="cart-recommendations-grid"
+                    mobileCarousel
+                  >
                     {recommendedProducts.map((product, index) => (
-                      <CardProduct
-                        key={product._id || index}
-                        product={product}
-                      />
+                      <CardProduct key={product._id || index} product={product} />
                     ))}
                   </ProductCardShelf>
                 )}
@@ -397,7 +353,7 @@ const CartView = () => {
                 </div>
 
                 <div className="d-flex justify-content-between mb-3">
-                  <span className="text-muted">Envío</span>
+                  <span className="text-muted">Envio</span>
                   <span className="text-success fw-bold">A coordinar</span>
                 </div>
 
@@ -421,7 +377,7 @@ const CartView = () => {
                 </button>
 
                 <p className="text-muted small mt-3 mb-0">
-                  Pago seguro y protección para tu compra.
+                  Pago seguro y proteccion para tu compra.
                 </p>
               </div>
             </div>

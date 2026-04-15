@@ -13,12 +13,14 @@ export const CartContext = createContext();
 export const CartProvider = ({ children }) => {
   const [items, setItems] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [totalItems, setTotalItems] = useState(0);
   const [loadingCart, setLoadingCart] = useState(false);
   const { user, isLoadingUser } = useContext(UserContext);
 
   const resetCartState = () => {
     setItems([]);
     setTotalPrice(0);
+    setTotalItems(0);
   };
 
   const normalizeCart = (cart) => {
@@ -30,14 +32,28 @@ export const CartProvider = ({ children }) => {
         image: item.product?.image || "/img/product-placeholder.jpg",
         price: item.product?.price || item.price || 0,
         quantity: item.quantity,
-        subtotal: item.subtotal || ((item.product?.price || item.price || 0) * item.quantity),
-        product: item.product, 
+        subtotal:
+          item.subtotal ||
+          (item.product?.price || item.price || 0) * item.quantity,
+        product: item.product,
         stock: item.product?.stock || 0,
         category: item.product?.category || null,
       })) || [];
 
+    const computedTotalPrice = normalizedItems.reduce(
+      (acc, item) => acc + (Number(item.subtotal) || 0),
+      0
+    );
+    const computedTotalItems = normalizedItems.reduce(
+      (acc, item) => acc + (Number(item.quantity) || 0),
+      0
+    );
+
     setItems(normalizedItems);
-    setTotalPrice(cart?.total || 0);
+    setTotalPrice(
+      Number(cart?.totalAmount ?? cart?.total) || computedTotalPrice
+    );
+    setTotalItems(Number(cart?.totalQuantity) || computedTotalItems);
   };
 
   const loadCart = async () => {
@@ -83,7 +99,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const increaseItem = async (productId) => {
-    const item = items.find((i) => i._id === productId);
+    const item = items.find((cartItem) => cartItem._id === productId);
     if (!item) return;
 
     try {
@@ -96,7 +112,7 @@ export const CartProvider = ({ children }) => {
   };
 
   const decreaseItem = async (productId) => {
-    const item = items.find((i) => i._id === productId);
+    const item = items.find((cartItem) => cartItem._id === productId);
     if (!item) return;
 
     if (item.quantity === 1) {
@@ -138,6 +154,7 @@ export const CartProvider = ({ children }) => {
       value={{
         items,
         totalPrice,
+        totalItems,
         loadingCart,
         loadCart,
         addToCart,

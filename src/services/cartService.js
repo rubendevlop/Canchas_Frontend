@@ -8,15 +8,17 @@ export const getCartRequest = async () => {
     credentials: "include",
     headers: {
       "Cache-Control": "no-cache, no-store, must-revalidate",
-      "Pragma": "no-cache",
-      "Expires": "0"
-    }
+      Pragma: "no-cache",
+      Expires: "0",
+    },
   });
 
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(getFriendlyErrorMessage(response, data, "Error al obtener carrito"));
+    throw new Error(
+      getFriendlyErrorMessage(response, data, "Error al obtener carrito")
+    );
   }
 
   return data;
@@ -38,7 +40,13 @@ export const addProductToCartRequest = async ({ product, quantity = 1 }) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(getFriendlyErrorMessage(response, data, "Error al agregar producto al carrito"));
+    throw new Error(
+      getFriendlyErrorMessage(
+        response,
+        data,
+        "Error al agregar producto al carrito"
+      )
+    );
   }
 
   return data;
@@ -46,7 +54,7 @@ export const addProductToCartRequest = async ({ product, quantity = 1 }) => {
 
 export const updateCartItemRequest = async (productId, quantity) => {
   const response = await fetch(`${API_URL}/${productId}`, {
-    method: "PATCH",
+    method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
@@ -57,7 +65,9 @@ export const updateCartItemRequest = async (productId, quantity) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(getFriendlyErrorMessage(response, data, "Error al actualizar carrito"));
+    throw new Error(
+      getFriendlyErrorMessage(response, data, "Error al actualizar carrito")
+    );
   }
 
   return data;
@@ -72,7 +82,9 @@ export const removeCartItemRequest = async (productId) => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(getFriendlyErrorMessage(response, data, "Error al eliminar producto"));
+    throw new Error(
+      getFriendlyErrorMessage(response, data, "Error al eliminar producto")
+    );
   }
 
   return data;
@@ -87,7 +99,9 @@ export const clearCartRequest = async () => {
   const data = await response.json();
 
   if (!response.ok) {
-    throw new Error(getFriendlyErrorMessage(response, data, "Error al vaciar carrito"));
+    throw new Error(
+      getFriendlyErrorMessage(response, data, "Error al vaciar carrito")
+    );
   }
 
   return data;

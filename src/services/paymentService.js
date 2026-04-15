@@ -2,7 +2,7 @@ import { getFriendlyErrorMessage } from "../helpers/handleApiError";
 
 const API_URL = `${import.meta.env.VITE_API_URL}/payment`;
 const MERCADO_PAGO_UNAVAILABLE_MESSAGE =
-  "La integración de pagos con Mercado Pago aún no se encuentra disponible. Por favor, contactá al administrador para coordinar la compra.";
+  "La integracion de pagos con Mercado Pago aun no se encuentra disponible. Por favor, contacta al administrador para coordinar la compra.";
 
 const getPaymentFriendlyMessage = (data) => {
   const backendMessage = data?.msg || data?.message || "";
@@ -38,7 +38,9 @@ export const createCartPaymentRequest = async () => {
       throw new Error(paymentFriendlyMessage);
     }
 
-    throw new Error(getFriendlyErrorMessage(response, data, "No se pudo iniciar el pago"));
+    throw new Error(
+      getFriendlyErrorMessage(response, data, "No se pudo iniciar el pago")
+    );
   }
 
   return data;
