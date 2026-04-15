@@ -1,8 +1,8 @@
 const SUSPENDED_ACCOUNT_MESSAGE =
-  "Tu cuenta se encuentra suspendida temporalmente. No puedes realizar compras en este momento. Por favor, contacta al administrador del sitio para más información.";
+  "Tu cuenta se encuentra suspendida temporalmente. No podes realizar compras en este momento. Por favor, contactate con el administrador del sitio para mas informacion.";
 
 const UNAUTHORIZED_MESSAGE =
-  "No tienes permisos para realizar esta acción en este momento. Si crees que es un error, contacta al administrador.";
+  "No tenes permisos para realizar esta accion en este momento. Si crees que es un error, contacta al administrador.";
 
 const stringifyPayload = (data) => {
   if (!data) return "";
@@ -14,9 +14,14 @@ const stringifyPayload = (data) => {
   }
 };
 
-export const getFriendlyErrorMessage = (response, data, defaultMessage = "Error en la solicitud") => {
+export const getFriendlyErrorMessage = (
+  response,
+  data,
+  defaultMessage = "Error en la solicitud"
+) => {
   const payloadText = stringifyPayload(data);
-  const isUnauthorizedStatus = response?.status === 401 || response?.status === 403;
+  const isUnauthorizedStatus =
+    response?.status === 401 || response?.status === 403;
   const hasSuspensionHint =
     payloadText.includes("suspend") ||
     payloadText.includes("inactive") ||
@@ -27,7 +32,10 @@ export const getFriendlyErrorMessage = (response, data, defaultMessage = "Error 
     payloadText.includes("at least one policy returned unauthorized") ||
     payloadText.includes("policy returned unauthorized");
 
-  if (isUnauthorizedStatus && (hasSuspensionHint || hasPolicyUnauthorizedHint || hasUnauthorizedHint)) {
+  if (
+    isUnauthorizedStatus &&
+    (hasSuspensionHint || hasPolicyUnauthorizedHint || hasUnauthorizedHint)
+  ) {
     return SUSPENDED_ACCOUNT_MESSAGE;
   }
 

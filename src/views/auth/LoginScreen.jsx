@@ -18,6 +18,7 @@ const LoginScreen = () => {
   const [response, setResponse] = useState();
   const { loadUserData } = useContext(UserContext);
   const [showPassword, setShowPassword] = useState(false);
+  const [mostrarModal, setMostrarModal] = useState(false);
 
   const {
     register,
@@ -30,23 +31,11 @@ const LoginScreen = () => {
     : "/";
 
   const onSubmit = async (data) => {
-    const response = await logIn(data.email, data.password);
+    const loginResponse = await logIn(data.email, data.password);
 
-    if (
-      !response?.ok &&
-      typeof response?.message === "string" &&
-      response.message.toLowerCase().includes("unauthorized")
-    ) {
-      setResponse({
-        ...response,
-        message: SUSPENDED_ACCOUNT_MESSAGE,
-      });
-      return;
-    }
+    setResponse(loginResponse);
 
-    setResponse(response);
-
-    if (response.ok) {
+    if (loginResponse.ok) {
       const profile = await loadUserData();
 
       if (profile?.active === false) {
@@ -61,86 +50,91 @@ const LoginScreen = () => {
     }
   };
 
-  const [mostrarModal, setMostrarModal] = useState(false);
-
   return (
     <>
-    <div className="container-fluid login-wrapper">
-      <div className="row min-vh-100">
-        <div className="col-12 col-lg-7 d-flex justify-content-center align-items-center abajo">
-          <div className="login-card">
-            <Link to="/" className="back-button">
-              <img src={regresar} alt="regresar al inicio" />
-            </Link>
-
-            <div className="circulo"></div>
-
-            <h2 className="title">¡Hola de nuevo!</h2>
-            <p className="subtitle">Ingresá para gestionar tus reservas</p>
-
-            <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
-              <label>Correo electrónico</label>
-              <input
-                type="email"
-                placeholder="juan.perez@ejemplo.com"
-                {...register("email", { required: "El email es obligatorio" })}
-              />
-              {errors.email && (
-                <span style={{ color: "red", fontSize: "12px" }}>
-                  {errors.email.message}
-                </span>
-              )}
-
-              <label>Contraseña</label>
-              <div className="password-wrapper">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  placeholder="••••••••"
-                  {...register("password", {
-                    required: "La contraseña es obligatoria",
-                  })}
-                />
-                <img
-                  src={showPassword ? visible : invisible}
-                  alt="Mostrar contraseña"
-                  className="eye"
-                  onClick={() => setShowPassword(!showPassword)}
-                />
-              </div>
-              {errors.password && (
-                <span style={{ color: "red", fontSize: "12px" }}>
-                  {errors.password.message}
-                </span>
-              )}
-
-              <button type="submit" className="login-button">
-                {isSubmitting ? "Ingresando..." : "Iniciar sesión"}
-              </button>
-            </form>
-            {!response?.ok && response && (
-              <AlertApp message={response?.message} />
-            )}
-
-            <div className="register-link">
-              ¿No tienes cuenta?{" "}
-              <Link to="/login" className="link-register" onClick={() => setMostrarModal(true)}>
-                <span>Registrate acá</span>
+      <div className="container-fluid login-wrapper">
+        <div className="row min-vh-100">
+          <div className="col-12 col-lg-7 d-flex justify-content-center align-items-center abajo">
+            <div className="login-card">
+              <Link to="/" className="back-button">
+                <img src={regresar} alt="Regresar al inicio" />
               </Link>
+
+              <div className="circulo"></div>
+
+              <h2 className="title">Hola de nuevo!</h2>
+              <p className="subtitle">Ingresa para gestionar tus reservas</p>
+
+              <form className="login-form" onSubmit={handleSubmit(onSubmit)}>
+                <label>Correo electronico</label>
+                <input
+                  type="email"
+                  placeholder="juan.perez@ejemplo.com"
+                  {...register("email", { required: "El email es obligatorio" })}
+                />
+                {errors.email && (
+                  <span style={{ color: "red", fontSize: "12px" }}>
+                    {errors.email.message}
+                  </span>
+                )}
+
+                <label>Contrasena</label>
+                <div className="password-wrapper">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    placeholder="********"
+                    {...register("password", {
+                      required: "La contrasena es obligatoria",
+                    })}
+                  />
+                  <img
+                    src={showPassword ? visible : invisible}
+                    alt="Mostrar contrasena"
+                    className="eye"
+                    onClick={() => setShowPassword(!showPassword)}
+                  />
+                </div>
+                {errors.password && (
+                  <span style={{ color: "red", fontSize: "12px" }}>
+                    {errors.password.message}
+                  </span>
+                )}
+
+                <button type="submit" className="login-button">
+                  {isSubmitting ? "Ingresando..." : "Iniciar sesion"}
+                </button>
+              </form>
+
+              {!response?.ok && response && (
+                <AlertApp message={response?.message} />
+              )}
+
+              <div className="register-link">
+                No tenes cuenta?{" "}
+                <Link
+                  to="/login"
+                  className="link-register"
+                  onClick={() => setMostrarModal(true)}
+                >
+                  <span>Registrate aca</span>
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
-        <div className="col-12 col-lg-5 p-0">
-          <img
-            src={imagenlogin}
-            alt="Complejo deportivo"
-            className="login-image"
-          />
+          <div className="col-12 col-lg-5 p-0">
+            <img
+              src={imagenlogin}
+              alt="Complejo deportivo"
+              className="login-image"
+            />
+          </div>
         </div>
       </div>
-    </div>
-      <ModalRegistro isOpen={mostrarModal} onClose={() => setMostrarModal(false)} />
+      <ModalRegistro
+        isOpen={mostrarModal}
+        onClose={() => setMostrarModal(false)}
+      />
     </>
-    
   );
 };
 

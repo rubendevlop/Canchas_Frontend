@@ -31,7 +31,7 @@ const Navbar = () => {
       setMostrarDropdown(false);
       navigate("/login");
     } catch (error) {
-      console.error("Error al cerrar sesión", error);
+      console.error("Error al cerrar sesion", error);
     }
   };
 
@@ -65,7 +65,7 @@ const Navbar = () => {
               <li className="nav-item-custom">
                 <NavLink to="/admin" className={buildNavClass}>
                   <i className="bi bi-columns-gap"></i>
-                  <span>Administración</span>
+                  <span>Administracion</span>
                 </NavLink>
               </li>
             )}

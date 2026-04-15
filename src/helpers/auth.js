@@ -1,6 +1,6 @@
 import { getFriendlyErrorMessage } from "./handleApiError";
 
-const url = `${import.meta.env.VITE_API_URL}/login`
+const url = `${import.meta.env.VITE_API_URL}/login`;
 const LOGOUT_FLAG_KEY = "auth:manual_logout";
 
 const getRegisterMessage = (data, fallbackMessage) => {
@@ -19,6 +19,18 @@ const getRegisterMessage = (data, fallbackMessage) => {
   return fallbackMessage;
 };
 
+const isCredentialErrorMessage = (message) =>
+  /credenciales incorrectas|correo.*incorrect|email.*incorrect|contrasen.*incorrect|password.*incorrect|usuario.*incorrect|invalid credentials|incorrect credentials/i.test(
+    String(message || "")
+  );
+
+const readJsonSafely = async (response) => {
+  try {
+    return await response.json();
+  } catch {
+    return {};
+  }
+};
 
 const logIn = async (email, password) => {
   const response = await fetch(url, {
@@ -30,17 +42,25 @@ const logIn = async (email, password) => {
     body: JSON.stringify({ email, password }),
   });
 
-  const data = await response.json();
+  const data = await readJsonSafely(response);
 
   if (!response.ok) {
+    const backendMessage = data?.msg || data?.message || "";
+
     return {
       ...data,
       ok: false,
-      message: getFriendlyErrorMessage(response, data, data?.msg || data?.message || "Error al iniciar sesión")
+      message: isCredentialErrorMessage(backendMessage)
+        ? backendMessage || "Credenciales incorrectas"
+        : getFriendlyErrorMessage(
+            response,
+            data,
+            backendMessage || "Error al iniciar sesion"
+          ),
     };
   }
 
-  if (response.ok && data?.ok !== false) {
+  if (data?.ok !== false) {
     localStorage.removeItem(LOGOUT_FLAG_KEY);
   }
 
@@ -59,7 +79,7 @@ const getProfile = async () => {
     cache: "no-store",
   });
 
-  const data = await response.json();
+  const data = await readJsonSafely(response);
   return { ok: response.ok, data };
 };
 
@@ -72,13 +92,7 @@ const registerUser = async (userData) => {
     body: JSON.stringify(userData),
   });
 
-  let data = {};
-
-  try {
-    data = await response.json();
-  } catch {
-    data = {};
-  }
+  const data = await readJsonSafely(response);
 
   return {
     ...data,
