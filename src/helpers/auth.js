@@ -2,6 +2,8 @@ import { getFriendlyErrorMessage } from "./handleApiError";
 
 const url = `${import.meta.env.VITE_API_URL}/login`;
 const LOGOUT_FLAG_KEY = "auth:manual_logout";
+const LOGIN_FAILED_MESSAGE =
+  "No se pudo iniciar sesion. Revisa tus datos y, si la cuenta fue suspendida o reactivada hace poco, contacta al administrador.";
 
 const getRegisterMessage = (data, fallbackMessage) => {
   if (Array.isArray(data?.msg) && data.msg.length > 0) {
@@ -19,17 +21,31 @@ const getRegisterMessage = (data, fallbackMessage) => {
   return fallbackMessage;
 };
 
-const isCredentialErrorMessage = (message) =>
-  /credenciales incorrectas|correo.*incorrect|email.*incorrect|contrasen.*incorrect|password.*incorrect|usuario.*incorrect|invalid credentials|incorrect credentials/i.test(
-    String(message || "")
-  );
-
 const readJsonSafely = async (response) => {
   try {
     return await response.json();
   } catch {
     return {};
   }
+};
+
+const getLoginErrorMessage = (response, data) => {
+  const backendMessage = data?.msg || data?.message || "";
+  const payloadText = String(backendMessage || "").toLowerCase();
+  const looksLikeCredentialError =
+    payloadText.includes("credenciales incorrectas") ||
+    payloadText.includes("incorrect credentials") ||
+    payloadText.includes("invalid credentials") ||
+    payloadText.includes("contrasen") ||
+    payloadText.includes("password") ||
+    payloadText.includes("correo") ||
+    payloadText.includes("email");
+
+  if (looksLikeCredentialError) {
+    return LOGIN_FAILED_MESSAGE;
+  }
+
+  return getFriendlyErrorMessage(response, data, LOGIN_FAILED_MESSAGE);
 };
 
 const logIn = async (email, password) => {
@@ -45,18 +61,10 @@ const logIn = async (email, password) => {
   const data = await readJsonSafely(response);
 
   if (!response.ok) {
-    const backendMessage = data?.msg || data?.message || "";
-
     return {
       ...data,
       ok: false,
-      message: isCredentialErrorMessage(backendMessage)
-        ? backendMessage || "Credenciales incorrectas"
-        : getFriendlyErrorMessage(
-            response,
-            data,
-            backendMessage || "Error al iniciar sesion"
-          ),
+      message: getLoginErrorMessage(response, data),
     };
   }
 
